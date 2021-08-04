@@ -60,7 +60,9 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
     public ResponseEntity<?> save(@RequestBody CreditMemo creditMemo) {
         User user = userService.getAuthenticated();
         if(user.getUsername() != null){
-            creditMemo.setFromUser(user.getUsername());
+            StringBuilder fromUserName = new StringBuilder();
+            fromUserName.append(user.getName()).append(" ").append("(").append(user.getRole().getRoleName()).append(")");
+            creditMemo.setFromUser(fromUserName.toString());
         }
         user.getBranch().forEach(branch->{
             creditMemo.setBranchName(branch.getName());
@@ -144,9 +146,8 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
         Document document = new Document();
         document.setId(documentId);
         creditMemoDocument.setDocument(document);
-        String branchName = userService.getAuthenticated().getBranch().get(0).getName().replace(" ", "_");
+//        String branchName = userService.getAuthenticated().getBranch().get(0).getName().replace(" ", "_");
         String path = new PathBuilder(pathName.toString())
-            .withBranch(branchName)
             .withCustomerName(customerName)
             .withCitizenship(citizenshipNumber)
             .withCustomerLoanId(customerLoanId)
