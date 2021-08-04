@@ -1,0 +1,88 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    
+    <changeSet id="2-create-loan_config_credit_memo_documents" author="elvin">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="loan_config_credit_memo_documents"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="loan_config_credit_memo_documents">
+            <column name="loan_config_id" type="BIGINT">
+                <constraints nullable="false"
+                  foreignKeyName="fk_loan_config_credit_memo_documents_loan_config_id_loan_config_id"
+                  referencedTableName="loan_config"
+                  referencedColumnNames="id"/>
+            </column>
+            <column name="credit_memo_documents_id" type="BIGINT">
+                <constraints nullable="false"
+                  foreignKeyName="fk_loan_config_credit_memo_documents_credit_memo_documents_id_document_id"
+                  referencedTableName="document"
+                  referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="2-create-credit_memo_document" author="elvin">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="credit_memo_document"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="credit_memo_document">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="created_by_id" type="BIGINT">
+                <constraints nullable="true"
+                  foreignKeyName="fk_credit_memo_document_created_by_id_users_id"
+                  referencedTableName="users"
+                  referencedColumnNames="id"/>
+            </column>
+            <column name="modified_by_id" type="BIGINT">
+                <constraints nullable="true"
+                  foreignKeyName="fk_credit_memo_document_modified_by_id_users_id"
+                  referencedTableName="users"
+                  referencedColumnNames="id"/>
+            </column>
+            <column name="created_at" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_at" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="INT" defaultValueNumeric="0"/>
+            <column name="document_id" type="BIGINT"/>
+            <column name="path" type="VARCHAR(500)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2-create-credit_memo_documents_path" author="elvin">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="credit_memo_documents_path"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="credit_memo_documents_path">
+            <column name="credit_memo_id" type="BIGINT">
+                <constraints nullable="false"
+                  foreignKeyName="fk_credit_memo_documents_path_credit_memo_id_credit_memo_id"
+                  referencedTableName="credit_memo"
+                  referencedColumnNames="id"/>
+            </column>
+            <column name="documents_id" type="BIGINT">
+                <constraints nullable="false"
+                  foreignKeyName="fk_credit_memo_documents_path_documents_id_credit_memo_document_id"
+                  referencedTableName="credit_memo_document"
+                  referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

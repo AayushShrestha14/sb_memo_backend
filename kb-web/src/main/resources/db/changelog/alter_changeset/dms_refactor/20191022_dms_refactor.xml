@@ -1,0 +1,155 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="alter-customer-loan" author="nishan">
+        <preConditions>
+            <foreignKeyConstraintExists foreignKeyTableName="customer_loan" foreignKeyName="fk_customer_loan_financial_id"/>
+        </preConditions>
+        <dropForeignKeyConstraint
+                baseTableName="customer_loan"
+                constraintName="fk_customer_loan_financial_id"/>
+    </changeSet>
+
+    <changeSet id="alter-customer-loan-financial-id" author="nishan">
+        <preConditions>
+            <columnExists tableName="customer_loan" columnName="financial_id"/>
+        </preConditions>
+        <dropColumn tableName="customer_loan" columnName="financial_id"/>
+    </changeSet>
+
+    <changeSet id="drop-financial" author="">
+        <preConditions>
+            <tableExists tableName="financial" />
+        </preConditions>
+        <dropTable tableName="financial"/>
+    </changeSet>
+    
+    <changeSet id="drop-guarantor" author="nishan">
+        <preConditions>
+            <tableExists tableName="guarantor"/>
+        </preConditions>
+        <dropTable tableName="guarantor"/>
+    </changeSet>
+    
+    <changeSet id="drop-valuator" author="nishan">
+        <preConditions>
+            <tableExists tableName="valuator"/>
+        </preConditions>
+        <dropTable tableName="valuator"/>
+    </changeSet>
+    
+    <changeSet id="drop-site-visit" author="nishan">
+        <preConditions>
+            <tableExists tableName="site_visit"/>
+        </preConditions>
+        <dropTable tableName="site_visit"/>
+    </changeSet>
+    
+    <changeSet id="alter-customer-customer-relative-constraint" author="nishan">
+        <preConditions>
+            <foreignKeyConstraintExists foreignKeyTableName="customer_customer_relatives" foreignKeyName="fk_customer_customer_relatives_customer_relatives_id"/>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="customer_customer_relatives" constraintName="fk_customer_customer_relatives_customer_relatives_id"></dropForeignKeyConstraint>
+    </changeSet>
+    
+    <changeSet id="alter-customer-customer-relative-column" author="nishan">
+        <preConditions>
+            <columnExists tableName="customer_customer_relatives" columnName="customer_relatives_id"></columnExists>
+        </preConditions>
+        <dropColumn tableName="customer_customer_relatives" columnName="customer_relatives_id"></dropColumn>
+    </changeSet>
+    
+    <changeSet id="drop-customer-relative" author="nishan">
+        <preConditions>
+            <tableExists tableName="customer_relative"></tableExists>
+        </preConditions>
+        <dropTable tableName="customer_relative"></dropTable>
+    </changeSet>
+    
+    <changeSet id="drop-nepse-company" author="nishan">
+        <preConditions>
+            <tableExists tableName="nepse_company"></tableExists>
+        </preConditions>
+        <dropTable tableName="nepse_company"></dropTable>
+    </changeSet>
+    
+    <changeSet id="alter-customer-loan-constraint-proposal" author="nishan">
+        <preConditions>
+            <foreignKeyConstraintExists foreignKeyTableName="customer_loan" foreignKeyName="fk_customer_loan_proposal_id"/>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="customer_loan" constraintName="fk_customer_loan_proposal_id"/>
+    </changeSet>
+    
+    <changeSet id="alter-customer-loan-proposal-column" author="nishan">
+        <preConditions>
+            <columnExists tableName="customer_loan" columnName="proposal_id"></columnExists>
+        </preConditions>
+        <dropColumn tableName="customer_loan" columnName="proposal_id"></dropColumn>
+    </changeSet>
+    
+    <changeSet id="drop-proposal" author="nishan">
+        <preConditions>
+            <tableExists tableName="proposal"></tableExists>
+        </preConditions>
+        <dropTable tableName="proposal"/>
+    </changeSet>
+
+    <changeSet id="alter-memo-bcc-user-constraint" author="nishan">
+        <preConditions>
+            <foreignKeyConstraintExists foreignKeyTableName="memo_bcc_user" foreignKeyName="fk_memo_bcc_user_memo_id"/>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="memo_bcc_user" constraintName="fk_memo_bcc_user_memo_id"/>
+    </changeSet>
+
+    <changeSet id="alter-memo-bcc-user-memo-id" author="nishan">
+        <preConditions>
+            <columnExists tableName="memo_bcc_user" columnName="memo_id"/>
+        </preConditions>
+        <dropColumn tableName="memo_bcc_user" columnName="memo_id"></dropColumn>
+    </changeSet>
+
+    <changeSet id="alter-memo-cc-user-constraint" author="nishan">
+        <preConditions>
+            <foreignKeyConstraintExists foreignKeyTableName="memo_cc_user" foreignKeyName="fk_memo_cc_user_memo_id"/>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="memo_cc_user" constraintName="fk_memo_cc_user_memo_id"/>
+    </changeSet>
+
+    <changeSet id="alter-memo-cc-user-memo-id" author="nishan">
+        <preConditions>
+            <columnExists tableName="memo_cc_user" columnName="memo_id"/>
+        </preConditions>
+        <dropColumn tableName="memo_cc_user" columnName="memo_id"></dropColumn>
+    </changeSet>
+
+    <changeSet id="alter-memo-stage-constraint" author="nishan">
+        <preConditions>
+            <foreignKeyConstraintExists foreignKeyTableName="memo_stage" foreignKeyName="fk_memo_stage_memo_id"/>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="memo_stage" constraintName="fk_memo_stage_memo_id"/>
+    </changeSet>
+
+    <changeSet id="alter-memo-stage-memo-id" author="nishan">
+        <preConditions>
+            <columnExists tableName="memo_stage" columnName="memo_id"/>
+        </preConditions>
+        <dropColumn tableName="memo_stage" columnName="memo_id"></dropColumn>
+    </changeSet>
+
+    <changeSet id="drop-proposal" author="nishan">
+        <preConditions>
+            <tableExists tableName="proposal"/>
+        </preConditions>
+        <dropTable tableName="proposal"></dropTable>
+    </changeSet>
+    <changeSet id="drop-company" author="nishan">
+        <preConditions>
+            <tableExists tableName="company"></tableExists>
+        </preConditions>
+        <dropTable tableName="company"></dropTable>
+    </changeSet>
+
+</databaseChangeLog>
+
+
