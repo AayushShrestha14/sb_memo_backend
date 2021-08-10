@@ -1,11 +1,9 @@
 package com.sb.solutions.api.creditmemo.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.sb.solutions.api.creditMemoCategory.entity.MemoCategory;
 import com.sb.solutions.api.document.entity.Document;
 import com.sb.solutions.api.rolePermissionRight.entity.MemoRole;
 import com.sb.solutions.api.rolePermissionRight.entity.Role;
@@ -44,4 +42,8 @@ public class CreditMemoType extends BaseEntity<Long> {
     @ManyToMany
     @Where(clause = "status=1")
     private List<Role> roles;
+
+    @ManyToMany
+    @Where(clause = "status=1")
+    private List<MemoCategory> category;
 }
