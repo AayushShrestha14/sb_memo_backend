@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
+import com.sb.solutions.api.branch.entity.Branch;
 import com.sb.solutions.api.creditmemo.repository.spec.CreditMemoTypeSpecBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -133,6 +134,13 @@ public class CreditMemoServiceImpl implements CreditMemoService {
     public Page<CreditMemo> findAllMemoTypePageableWithFilter(Object t, Pageable pageable) {
         final ObjectMapper objectMapper = new ObjectMapper();
         Map<String, String> search = objectMapper.convertValue(t, Map.class);
+        User user = userService.getAuthenticated();
+        if(user.getBranch() != null) {
+            for(Branch userBranch: user.getBranch()){
+                search.put("branchName", userBranch.getName());
+            }
+
+        }
         CreditMemoTypeSpecBuilder builder = new CreditMemoTypeSpecBuilder(search);
         return repository.findAll(builder.build(), pageable);
     }

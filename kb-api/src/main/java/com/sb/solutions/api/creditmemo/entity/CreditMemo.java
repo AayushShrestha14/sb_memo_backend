@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.sb.solutions.api.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -87,6 +88,9 @@ public class CreditMemo extends BaseEntity<Long> {
 
     @Transient
     private List<LoanStageDto> distinctPreviousList;
+
+    @ManyToMany
+    private List<User> userFlow;
 
     public List<LoanStageDto> getPreviousStages() {
         if (this.getPreviousStageList() != null) {

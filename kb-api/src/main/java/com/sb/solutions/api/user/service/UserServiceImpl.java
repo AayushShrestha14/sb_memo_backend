@@ -361,6 +361,13 @@ public class UserServiceImpl implements UserService {
         return passwordEncoder.matches(oldPassword, user.getPassword());
     }
 
+    @Override
+    public List<User> getAll() {
+       return userRepository.findAll().stream().filter( data->
+               !data.getRole().getRoleName().equals("admin")).collect(Collectors.toList());
+
+    }
+
     private List<RoleDto> userAndRoleDtoMap(List<RoleDto> roleDtoList, List<User> users,
                                             Long userId) {
         List<RoleDto> finalRoleDtoList = new ArrayList<>();

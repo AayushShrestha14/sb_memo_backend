@@ -27,10 +27,10 @@ BEGIN
     if (@count = 0)
         BEGIN
             SET IDENTITY_INSERT sub_nav ON
+--             INSERT INTO sub_nav (id, sub_nav_name, front_url, fa_icon)
+--             VALUES (13, 'Compose', '/home/credit-memo/compose', 'email-outline')
             INSERT INTO sub_nav (id, sub_nav_name, front_url, fa_icon)
-            VALUES (13, 'Compose', '/home/credit-memo/compose', 'email-outline')
-            INSERT INTO sub_nav (id, sub_nav_name, front_url, fa_icon)
-            VALUES (14, 'Inbox', '/home/credit-memo/inbox', 'inbox')
+            VALUES (14, 'Pending', '/home/credit-memo/inbox', 'inbox')
             INSERT INTO sub_nav (id, sub_nav_name, front_url, fa_icon)
             VALUES (15, 'Approved', '/home/credit-memo/approved', 'money-check')
             INSERT INTO sub_nav (id, sub_nav_name, front_url, fa_icon)

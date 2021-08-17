@@ -67,6 +67,12 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
         user.getBranch().forEach(branch->{
             creditMemo.setBranchName(branch.getName());
         });
+        StringBuilder userFlow = new StringBuilder();
+        creditMemo.getUserFlow().forEach( flow -> {
+            userFlow.append(flow.getUsername()).append("/");
+        });
+        userFlow.replace(userFlow.length()-1, userFlow.length(),".");
+        creditMemo.setToUser(userFlow.toString());
         return new RestResponseDto().successModel(service.save(creditMemo));
     }
 

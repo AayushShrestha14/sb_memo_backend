@@ -19,6 +19,7 @@ public class CreditMemoTypeSpec implements Specification<CreditMemo> {
     private static final String FILTER_BY_LOAN_ASSOCIATED = "loanAssociated";
     private static final String FILTER_BY_REFERENCE_NUMBER = "referenceNumber";
     private static final String FILTER_BY_DOC_STATUS = "documentStatus";
+    private static final String FILTER_BY_BRANCH_NAME = "branchName";
 
     private final String property;
     private final String value;
@@ -52,6 +53,11 @@ public class CreditMemoTypeSpec implements Specification<CreditMemo> {
                     }
                 case FILTER_BY_DOC_STATUS:
                     return criteriaBuilder.equal(root.get(property), DocStatus.valueOf(value));
+
+                case FILTER_BY_BRANCH_NAME:
+                    return criteriaBuilder.like(criteriaBuilder.lower(root.get(FILTER_BY_BRANCH_NAME)),
+                            "%" + value.toLowerCase() + "%");
+
                 default:
                     return null;
             }

@@ -54,4 +54,6 @@ public interface UserService extends BaseService<User>, UserDetailsService {
     List<RoleDto> getRoleWiseBranchWiseUserList(Long roleId, Long branchId, Long userId);
 
     boolean checkIfValidOldPassword(User user, String password);
+
+    List<User> getAll();
 }

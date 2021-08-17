@@ -2145,4 +2145,27 @@
       </column>
     </createTable>
   </changeSet>
+
+  <changeSet id="07-create-credit_memo_user_flow" author="himal rai">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="credit_memo_user_flow"/>
+      </not>
+    </preConditions>
+
+    <createTable tableName="credit_memo_user_flow">
+      <column name="credit_memo_id" type="BIGINT">
+        <constraints nullable="true"
+                     foreignKeyName="fk_credit_memo_user_flow_credit_memo_id_credit_memo_id"
+                     referencedTableName="credit_memo"
+                     referencedColumnNames="id"/>
+      </column>
+      <column name="user_flow_id" type="BIGINT">
+        <constraints nullable="true"
+                     foreignKeyName="fk_credit_memo_user_flow_id_credit_memo_user_flow_id"
+                     referencedTableName="users"
+                     referencedColumnNames="id"/>
+      </column>
+    </createTable>
+  </changeSet>
 </databaseChangeLog>
