@@ -1,6 +1,9 @@
 package com.sb.solutions.web.creditmemo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.sb.solutions.api.user.entity.User;
 import io.swagger.annotations.ApiImplicitParam;
@@ -119,8 +122,14 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
     @PostMapping("/NotloanAssociated")
     public ResponseEntity<?> getPageableForNotLoanAssociated(@RequestBody Object search, @RequestParam("page") int page,
                                                           @RequestParam("size") int size) {
+        List<CreditMemo> filterMemo= new ArrayList<>();
+
+        filterMemo.addAll(service.findAllMemoTypePageableWithFilter(search, PaginationUtils.pageable(page,size)).
+                stream().collect(Collectors.toList()));
+        filterMemo.addAll(service.findByBranch());
         return new RestResponseDto()
-                .successModel(service.findAllMemoTypePageableWithFilter(search, PaginationUtils.pageable(page, size)));
+                .successModel(filterMemo);
+
     }
 
     @PostMapping("/action")

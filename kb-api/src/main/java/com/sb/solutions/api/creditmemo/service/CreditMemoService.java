@@ -1,5 +1,6 @@
 package com.sb.solutions.api.creditmemo.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.sb.solutions.api.creditmemo.entity.CreditMemo;
@@ -18,4 +19,5 @@ public interface CreditMemoService extends BaseService<CreditMemo> {
 
     Page<CreditMemo> findAllPageableForLoanAssociated(Object t, Pageable pageable);
     Page<CreditMemo> findAllMemoTypePageableWithFilter(Object t, Pageable pageable);
+    List<CreditMemo> findByBranch();
 }

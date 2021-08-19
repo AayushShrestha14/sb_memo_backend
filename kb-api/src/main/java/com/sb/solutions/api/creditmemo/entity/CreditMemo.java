@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.sb.solutions.api.branch.entity.Branch;
 import com.sb.solutions.api.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -61,6 +62,9 @@ public class CreditMemo extends BaseEntity<Long> {
     private String toUser;
 
     private String branchName;
+
+    @OneToOne
+    private Branch branch;
 
     private String fromUser;
 

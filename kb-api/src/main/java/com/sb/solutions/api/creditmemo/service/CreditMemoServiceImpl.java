@@ -1,5 +1,6 @@
 package com.sb.solutions.api.creditmemo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.sb.solutions.api.branch.entity.Branch;
 import com.sb.solutions.api.creditmemo.repository.spec.CreditMemoTypeSpecBuilder;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -52,8 +54,8 @@ public class CreditMemoServiceImpl implements CreditMemoService {
     public CreditMemo save(CreditMemo creditMemo) {
 //        Preconditions
 //            .checkNotNull(creditMemo.getCustomerLoan(), "Missing Associated Customer Loan");
+        User user = userService.getAuthenticated();
         if (creditMemo.getId() == null) {
-            User user = userService.getAuthenticated();
             final CreditMemoStage stage = new CreditMemoStage();
             stage.setFromRole(user.getRole());
             stage.setToRole(user.getRole());
@@ -62,7 +64,9 @@ public class CreditMemoServiceImpl implements CreditMemoService {
             stage.setComment(DocAction.DRAFT.toString());
             stage.setDocAction(DocAction.DRAFT);
             creditMemo.setCurrentStage(stage);
+
         }
+        creditMemo.setBranch(user.getBranch().get(0));
         return repository.save(creditMemo);
     }
 
@@ -134,16 +138,47 @@ public class CreditMemoServiceImpl implements CreditMemoService {
     public Page<CreditMemo> findAllMemoTypePageableWithFilter(Object t, Pageable pageable) {
         final ObjectMapper objectMapper = new ObjectMapper();
         Map<String, String> search = objectMapper.convertValue(t, Map.class);
-        User user = userService.getAuthenticated();
-        if(user.getBranch() != null) {
-            for(Branch userBranch: user.getBranch()){
-                search.put("branchName", userBranch.getName());
-            }
+//        User user = userService.getAuthenticated();
+//        if(user.getBranch() != null) {
+//            for(Branch userBranch: user.getBranch()){
+//                search.put("branchName", userBranch.getName());
+//            }
+//
+//        }
+//        String branchAccess = userService.getRoleAccessFilterByBranch().stream()
+//                .map(Object::toString).collect(Collectors.joining(","));
+//        if (search.containsKey("branchIds")) {
+//            branchAccess = search.get("branchIds");
+//        }
+//        search.put("branchIds", branchAccess);
 
-        }
+        User u = userService.getAuthenticated();
+
+          if(search.containsKey("documentStatus") &&
+                  search.get("documentStatus").equalsIgnoreCase(DocStatus.PENDING.toString())){
+              search.put("currentStage.toRole.id", u.getRole() == null ? null :
+                      Objects.requireNonNull(u.getRole().getId()).toString());
+              search.put("currentStage.toUser.id", Objects.requireNonNull(u.getId()).toString());
+          }
+
+        search.values().removeIf(Objects::isNull);
         CreditMemoTypeSpecBuilder builder = new CreditMemoTypeSpecBuilder(search);
         return repository.findAll(builder.build(), pageable);
     }
+
+    @Override
+    public List<CreditMemo> findByBranch() {
+
+
+        User user = userService.getAuthenticated();
+        List<CreditMemo> memoByBranch = new ArrayList<>();
+        for (Branch b : user.getBranch()) {
+            memoByBranch.addAll(repository.findByBranch(b));
+        }
+
+        return memoByBranch;
+    }
+
 
 
 }

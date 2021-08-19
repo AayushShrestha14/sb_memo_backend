@@ -20,6 +20,10 @@ public class CreditMemoTypeSpec implements Specification<CreditMemo> {
     private static final String FILTER_BY_REFERENCE_NUMBER = "referenceNumber";
     private static final String FILTER_BY_DOC_STATUS = "documentStatus";
     private static final String FILTER_BY_BRANCH_NAME = "branchName";
+    private static final String FILTER_BY_BRANCH = "branchIds";
+    private static final String FILTER_BY_CURRENT_STAGE_TO_ROLE = "currentStage.toRole.id";
+    private static final String FILTER_BY_CURRENT_STAGE_TO_USER = "currentStage.toUser.id";
+
 
     private final String property;
     private final String value;
@@ -57,6 +61,23 @@ public class CreditMemoTypeSpec implements Specification<CreditMemo> {
                 case FILTER_BY_BRANCH_NAME:
                     return criteriaBuilder.like(criteriaBuilder.lower(root.get(FILTER_BY_BRANCH_NAME)),
                             "%" + value.toLowerCase() + "%");
+                case FILTER_BY_BRANCH:
+                    Pattern pattern = Pattern.compile(",");
+                    List<Long> list = pattern.splitAsStream(value)
+                            .map(Long::valueOf)
+                            .collect(Collectors.toList());
+                    Expression<String> exp = root.join("branch").get("id");
+                    Predicate predicate = exp.in(list);
+                    return criteriaBuilder.and(predicate);
+
+                case FILTER_BY_CURRENT_STAGE_TO_ROLE:
+                    return criteriaBuilder
+                            .equal(root.join("currentStage", JoinType.LEFT).join("toRole").get("id"),
+                                    Long.valueOf(value));
+                case FILTER_BY_CURRENT_STAGE_TO_USER:
+                    return criteriaBuilder.equal(
+                            root.join("currentStage", JoinType.LEFT).join("toUser").get("id"),
+                            Long.valueOf(value));
 
                 default:
                     return null;

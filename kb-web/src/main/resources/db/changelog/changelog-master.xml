@@ -2168,4 +2168,16 @@
       </column>
     </createTable>
   </changeSet>
+
+  <changeSet id="08-alter-credit-memo-add-branch" author="himal rai">
+    <addColumn
+            tableName="credit_memo">
+      <column name="branch_id" type="BIGINT">
+        <constraints nullable="true"
+                     foreignKeyName="fk_credit_memo_branch_id"
+                     referencedTableName="branch"
+                     referencedColumnNames="id"/>
+      </column>
+    </addColumn>
+  </changeSet>
 </databaseChangeLog>
