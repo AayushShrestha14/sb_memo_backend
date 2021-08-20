@@ -77,6 +77,7 @@ public class CreditMemoStageMapper {
 
     private void updateStage(StageDto stageDto, List<LoanStageDto> previousList,
         CreditMemoStage currentStage, CreditMemo creditMemo) {
+
         User currentUser = userService.getAuthenticated();
         currentStage.setFromUser(currentUser);
         currentStage.setFromRole(currentUser.getRole());
@@ -109,7 +110,7 @@ public class CreditMemoStageMapper {
                             try {
                                 final List<User> users = userService
                                     .findByRoleAndBranchId(maker.getFromRole().getId(),
-                                        creditMemo.getCustomerLoan().getBranch().getId());
+                                        creditMemo.getBranch().getId());
                                 final List<Long> userIdList = users.stream().map(User::getId)
                                     .collect(Collectors.toList());
                                 if (userIdList.contains(currentStage.getCreatedBy())) {

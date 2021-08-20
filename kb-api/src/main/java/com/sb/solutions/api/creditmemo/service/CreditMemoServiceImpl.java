@@ -151,17 +151,17 @@ public class CreditMemoServiceImpl implements CreditMemoService {
 //            branchAccess = search.get("branchIds");
 //        }
 //        search.put("branchIds", branchAccess);
-
-        User u = userService.getAuthenticated();
-
-          if(search.containsKey("documentStatus") &&
-                  search.get("documentStatus").equalsIgnoreCase(DocStatus.PENDING.toString())){
-              search.put("currentStage.toRole.id", u.getRole() == null ? null :
-                      Objects.requireNonNull(u.getRole().getId()).toString());
-              search.put("currentStage.toUser.id", Objects.requireNonNull(u.getId()).toString());
-          }
-
-        search.values().removeIf(Objects::isNull);
+//
+//        User u = userService.getAuthenticated();
+//
+//          if(search.containsKey("documentStatus") &&
+//                  search.get("documentStatus").equalsIgnoreCase(DocStatus.PENDING.toString())){
+//              search.put("currentStage.toRole.id", u.getRole() == null ? null :
+//                      Objects.requireNonNull(u.getRole().getId()).toString());
+//              search.put("currentStage.toUser.id", Objects.requireNonNull(u.getId()).toString());
+//          }
+//
+//        search.values().removeIf(Objects::isNull);
         CreditMemoTypeSpecBuilder builder = new CreditMemoTypeSpecBuilder(search);
         return repository.findAll(builder.build(), pageable);
     }
