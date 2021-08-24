@@ -123,8 +123,7 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
     public ResponseEntity<?> getPageableForNotLoanAssociated(@RequestBody Object search, @RequestParam("page") int page,
                                                           @RequestParam("size") int size) {
         return new RestResponseDto()
-                .successModel(service.findAllMemoTypePageableWithFilter(search, PaginationUtils.pageable(page,size)).
-                        stream().collect(Collectors.toList()));
+                .successModel(service.findAllMemoTypePageableWithFilter(search, PaginationUtils.pageable(page,size)));
 
     }
 
