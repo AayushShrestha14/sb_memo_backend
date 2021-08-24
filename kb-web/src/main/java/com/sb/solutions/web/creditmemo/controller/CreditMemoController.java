@@ -72,7 +72,9 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
         });
         StringBuilder userFlow = new StringBuilder();
         creditMemo.getUserFlow().forEach( flow -> {
-            userFlow.append(flow.getUsername()).append("/");
+            if(flow.getId() != creditMemo.getUserFlow().get(creditMemo.getUserFlow().size()-1).getId()) {
+                userFlow.append(flow.getName()).append("/");
+            }
         });
         userFlow.replace(userFlow.length()-1, userFlow.length(),".");
         creditMemo.setToUser(userFlow.toString());

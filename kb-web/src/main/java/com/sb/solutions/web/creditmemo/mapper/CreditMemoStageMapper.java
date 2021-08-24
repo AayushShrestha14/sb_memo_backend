@@ -122,6 +122,14 @@ public class CreditMemoStageMapper {
 
                 break;
 
+            case TRANSFER:
+                Role role = roleService.findOne(stageDto.getToRole().getId());
+                currentStage.setToRole(role);
+                User transferUser = new User();
+                transferUser.setId(stageDto.getToUser().getId());
+                currentStage.setToUser(transferUser);
+                break;
+
             case APPROVED:
             case REJECT:
                 currentStage.setToRole(currentUser.getRole());
