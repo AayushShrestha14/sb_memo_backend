@@ -76,7 +76,9 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
                 userFlow.append(flow.getName()).append("/");
             }
         });
-        userFlow.replace(userFlow.length()-1, userFlow.length(),".");
+        if(creditMemo.getUserFlow().size() != 1){
+            userFlow.replace(userFlow.length()-1, userFlow.length(),".");
+        }
         creditMemo.setToUser(userFlow.toString());
         return new RestResponseDto().successModel(service.save(creditMemo));
     }
