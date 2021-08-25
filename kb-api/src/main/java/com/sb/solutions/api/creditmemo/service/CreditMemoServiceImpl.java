@@ -64,9 +64,35 @@ public class CreditMemoServiceImpl implements CreditMemoService {
             stage.setComment(DocAction.DRAFT.toString());
             stage.setDocAction(DocAction.DRAFT);
             creditMemo.setCurrentStage(stage);
+            //set other initiator information dynamically
 
+            creditMemo.setBranch(user.getBranch().get(0));
+            if(user.getUsername() != null){
+                StringBuilder fromUserName = new StringBuilder();
+                fromUserName.append(user.getName()).append(" ").append("(").append(user.getRole().getRoleName()).append(")");
+                creditMemo.setFromUser(fromUserName.toString());
+            }
+            user.getBranch().forEach(branch->{
+                creditMemo.setBranchName(branch.getName());
+            });
         }
-        creditMemo.setBranch(user.getBranch().get(0));
+
+        //set memo userFlow
+        StringBuilder userFlow = new StringBuilder();
+        creditMemo.getUserFlow().forEach( flow -> {
+            /*filter userflow and set top index user to topUser and rest for CC:
+            * to: top index user
+            * CC: rest user */
+            if(flow.getId() != creditMemo.getUserFlow().get(creditMemo.getUserFlow().size()-1).getId()) {
+                userFlow.append(flow.getName()).append("/");
+            }
+        });
+
+        //set userFlow CC
+        if(creditMemo.getUserFlow().size() != 1){
+            userFlow.replace(userFlow.length()-1, userFlow.length(),".");
+        }
+        creditMemo.setToUser(userFlow.toString());
         return repository.save(creditMemo);
     }
 
@@ -76,10 +102,10 @@ public class CreditMemoServiceImpl implements CreditMemoService {
         Map<String, String> search = objectMapper.convertValue(t, Map.class);
         String branchAccess = userService.getRoleAccessFilterByBranch().stream()
             .map(Object::toString).collect(Collectors.joining(","));
-//        if (search.containsKey("branchIds")) {
-//            branchAccess = search.get("branchIds");
-//        }
-//        search.put("branchIds", branchAccess);
+        if (search.containsKey("branchIds")) {
+            branchAccess = search.get("branchIds");
+        }
+        search.put("branchIds", branchAccess);
         User u = userService.getAuthenticated();
         if (search.containsKey("documentStatus")
             && search.get("documentStatus").equalsIgnoreCase(DocStatus.PENDING.toString())) {

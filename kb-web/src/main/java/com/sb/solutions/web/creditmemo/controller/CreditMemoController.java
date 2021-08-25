@@ -61,25 +61,6 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
 
     @PostMapping
     public ResponseEntity<?> save(@RequestBody CreditMemo creditMemo) {
-        User user = userService.getAuthenticated();
-        if(user.getUsername() != null){
-            StringBuilder fromUserName = new StringBuilder();
-            fromUserName.append(user.getName()).append(" ").append("(").append(user.getRole().getRoleName()).append(")");
-            creditMemo.setFromUser(fromUserName.toString());
-        }
-        user.getBranch().forEach(branch->{
-            creditMemo.setBranchName(branch.getName());
-        });
-        StringBuilder userFlow = new StringBuilder();
-        creditMemo.getUserFlow().forEach( flow -> {
-            if(flow.getId() != creditMemo.getUserFlow().get(creditMemo.getUserFlow().size()-1).getId()) {
-                userFlow.append(flow.getName()).append("/");
-            }
-        });
-        if(creditMemo.getUserFlow().size() != 1){
-            userFlow.replace(userFlow.length()-1, userFlow.length(),".");
-        }
-        creditMemo.setToUser(userFlow.toString());
         return new RestResponseDto().successModel(service.save(creditMemo));
     }
 
