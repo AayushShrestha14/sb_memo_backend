@@ -194,14 +194,11 @@ public class CreditMemoServiceImpl implements CreditMemoService {
 
     @Override
     public List<CreditMemo> findByBranch() {
-
-
         User user = userService.getAuthenticated();
         List<CreditMemo> memoByBranch = new ArrayList<>();
         for (Branch b : user.getBranch()) {
             memoByBranch.addAll(repository.findByBranch(b));
         }
-
         return memoByBranch;
     }
 

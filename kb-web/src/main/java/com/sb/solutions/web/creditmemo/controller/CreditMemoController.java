@@ -156,6 +156,19 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
         return new RestResponseDto().successModel(creditMemoDocument);
     }
 
+    @GetMapping("/userFlow")
+    public ResponseEntity<?> userFlow() {
+        //set userFlow while composing memo
+        User user = userService.getAuthenticated();
+        List<User> userFlow = new ArrayList<>();
+        userService.getAll().forEach((u) -> {
+            if (!Objects.equals(u.getId(), user.getId())) {
+                userFlow.add(u);
+            }
+        });
+        return new RestResponseDto().successModel(userFlow);
+    }
+
     @Override
     protected Logger getLogger() {
         return logger;
