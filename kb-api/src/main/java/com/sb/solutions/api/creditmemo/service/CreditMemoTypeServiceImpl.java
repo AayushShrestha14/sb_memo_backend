@@ -2,7 +2,9 @@ package com.sb.solutions.api.creditmemo.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+import com.sb.solutions.api.creditmemo.repository.spec.MemoTypeSpecBuilder;
 import com.sb.solutions.api.user.entity.User;
 import com.sb.solutions.api.user.service.UserService;
 import com.sb.solutions.core.dto.SearchDto;
@@ -47,9 +49,10 @@ public class CreditMemoTypeServiceImpl implements CreditMemoTypeService {
     @Override
     public Page<CreditMemoType> findAllPageable(Object t, Pageable pageable) {
         ObjectMapper objectMapper = new ObjectMapper();
-        SearchDto s = objectMapper.convertValue(t, SearchDto.class);
-
-        return repository.creditMemoTypeFilter(s.getName() == null ? "" : s.getName(), pageable);
+        Map<String, String> search = objectMapper.convertValue(t,Map.class);
+        search.values().removeIf(Objects::isNull);
+        MemoTypeSpecBuilder builder = new MemoTypeSpecBuilder(search);
+        return repository.findAll(builder.build(), pageable);
     }
 
     @Override

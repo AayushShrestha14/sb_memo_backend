@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class CreditMemoTypeSpec implements Specification<CreditMemo> {
+public class MemoSpec implements Specification<CreditMemo> {
     private static final String FILTER_BY_TYPE_ID = "CreditMemoTypeId";
     private static final String FILTER_BY_CURRENT_STAGE_DATE = "currentStageDate";
     private static final String FILTER_BY_LOAN_ASSOCIATED = "loanAssociated";
@@ -28,7 +28,7 @@ public class CreditMemoTypeSpec implements Specification<CreditMemo> {
     private final String property;
     private final String value;
 
-    public CreditMemoTypeSpec(String property, String value) {
+    public MemoSpec(String property, String value) {
         this.property = property;
         this.value = value;
     }

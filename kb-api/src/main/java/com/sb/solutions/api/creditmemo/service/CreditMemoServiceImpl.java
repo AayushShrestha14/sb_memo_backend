@@ -7,10 +7,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Preconditions;
 import com.sb.solutions.api.branch.entity.Branch;
-import com.sb.solutions.api.creditmemo.repository.spec.CreditMemoTypeSpecBuilder;
-import org.springframework.data.annotation.CreatedDate;
+import com.sb.solutions.api.creditmemo.repository.spec.MemoSpecBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -90,7 +88,7 @@ public class CreditMemoServiceImpl implements CreditMemoService {
 
         //set userFlow CC
         if(creditMemo.getUserFlow().size() != 1){
-            userFlow.replace(userFlow.length()-1, userFlow.length(),".");
+            userFlow.replace(userFlow.length()-1, userFlow.length()," ");
         }
         creditMemo.setToUser(userFlow.toString());
         return repository.save(creditMemo);
@@ -188,7 +186,7 @@ public class CreditMemoServiceImpl implements CreditMemoService {
 //          }
 //
 //        search.values().removeIf(Objects::isNull);
-        CreditMemoTypeSpecBuilder builder = new CreditMemoTypeSpecBuilder(search);
+        MemoSpecBuilder builder = new MemoSpecBuilder(search);
         return repository.findAll(builder.build(), pageable);
     }
 
