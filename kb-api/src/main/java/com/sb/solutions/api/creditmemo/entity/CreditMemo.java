@@ -16,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.sb.solutions.api.branch.entity.Branch;
+import com.sb.solutions.api.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -61,6 +63,9 @@ public class CreditMemo extends BaseEntity<Long> {
 
     private String branchName;
 
+    @OneToOne
+    private Branch branch;
+
     private String fromUser;
 
     private DocStatus documentStatus = DocStatus.PENDING;
@@ -87,6 +92,9 @@ public class CreditMemo extends BaseEntity<Long> {
 
     @Transient
     private List<LoanStageDto> distinctPreviousList;
+
+    @ManyToMany
+    private List<User> userFlow;
 
     public List<LoanStageDto> getPreviousStages() {
         if (this.getPreviousStageList() != null) {

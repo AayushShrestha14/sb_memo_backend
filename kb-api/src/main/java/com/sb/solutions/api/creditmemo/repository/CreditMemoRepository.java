@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sb.solutions.api.address.district.entity.District;
+import com.sb.solutions.api.branch.entity.Branch;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,5 +28,7 @@ public interface CreditMemoRepository extends JpaRepository<CreditMemo, Long>,
 
         + "(SELECT COUNT(cm.id) FROM credit_memo cm  WHERE cm.document_status=2) Rejected",nativeQuery = true)
     Map<String, Integer> statusCount();
+
+    List<CreditMemo> findByBranch(Branch branch);
 
 }

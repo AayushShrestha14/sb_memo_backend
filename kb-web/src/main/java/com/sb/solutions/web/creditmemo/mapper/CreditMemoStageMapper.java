@@ -77,6 +77,7 @@ public class CreditMemoStageMapper {
 
     private void updateStage(StageDto stageDto, List<LoanStageDto> previousList,
         CreditMemoStage currentStage, CreditMemo creditMemo) {
+
         User currentUser = userService.getAuthenticated();
         currentStage.setFromUser(currentUser);
         currentStage.setFromRole(currentUser.getRole());
@@ -94,42 +95,39 @@ public class CreditMemoStageMapper {
                 break;
 
             case BACKWARD:
-                if (previousList.isEmpty()) {
-                    currentStage.setToUser(currentStage.getFromUser());
-                    currentStage.setToRole(currentStage.getFromRole());
-                } else {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    objectMapper.setSerializationInclusion(Include.NON_EMPTY);
-                    objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-                    for (Object obj : previousList) {
-                        Stage maker = objectMapper.convertValue(obj, Stage.class);
-                        if (maker.getFromUser().getId().equals(currentStage.getCreatedBy())) {
-                            currentStage.setToRole(maker.getFromRole());
-
-                            try {
-                                final List<User> users = userService
-                                    .findByRoleAndBranchId(maker.getFromRole().getId(),
-                                        creditMemo.getCustomerLoan().getBranch().getId());
-                                final List<Long> userIdList = users.stream().map(User::getId)
-                                    .collect(Collectors.toList());
-                                if (userIdList.contains(currentStage.getCreatedBy())) {
-                                    java.util.Optional<User> userOptional = users.stream().
-                                        filter(p -> p.getId().equals(currentStage.getCreatedBy())).
-                                        findFirst();
-                                    currentStage.setToUser(
-                                        objectMapper.convertValue(userOptional.get(), User.class));
-                                } else {
-                                    currentStage
-                                        .setToUser(
-                                            objectMapper.convertValue(users.get(0), User.class));
-                                }
-                            } catch (Exception e) {
-                                logger.error("Error occurred while mapping credit memo stage", e);
-                                throw new RuntimeException("Error while performing the action");
-                            }
-                        }
+                User user = userService.getAuthenticated();
+                int currentIndex = creditMemo.getUserFlow().lastIndexOf(user);
+                if(currentIndex >0 && currentIndex != 0) {
+                    User toUser = creditMemo.getUserFlow().get(currentIndex - 1);
+                    currentStage.setToUser(toUser);
+                    currentStage.setToRole(toUser.getRole());
+                }
+                else {
+                    if (previousList.isEmpty()) {
+                        currentStage.setToUser(currentStage.getFromUser());
+                        currentStage.setToRole(currentStage.getFromRole());
+                    } else {
+                        memoBackward(previousList,currentStage,creditMemo);
                     }
                 }
+                break;
+
+            case BACKWARD_INITIATOR:
+                if (previousList.isEmpty()) {
+                        currentStage.setToUser(currentStage.getFromUser());
+                        currentStage.setToRole(currentStage.getFromRole());
+                    } else {
+                        memoBackward(previousList,currentStage,creditMemo);
+                    }
+
+                break;
+
+            case TRANSFER:
+                Role role = roleService.findOne(stageDto.getToRole().getId());
+                currentStage.setToRole(role);
+                User transferUser = new User();
+                transferUser.setId(stageDto.getToUser().getId());
+                currentStage.setToUser(transferUser);
                 break;
 
             case APPROVED:
@@ -140,4 +138,47 @@ public class CreditMemoStageMapper {
                 break;
         }
     }
+
+    private void memoBackward(List<LoanStageDto> previousList,
+                              CreditMemoStage currentStage,
+                              CreditMemo creditMemo){
+        if (previousList.isEmpty()) {
+            currentStage.setToUser(currentStage.getFromUser());
+            currentStage.setToRole(currentStage.getFromRole());
+        } else {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.setSerializationInclusion(Include.NON_EMPTY);
+            objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+            for (Object obj : previousList) {
+                Stage maker = objectMapper.convertValue(obj, Stage.class);
+                if (maker.getFromUser().getId().equals(currentStage.getCreatedBy())) {
+                    currentStage.setToRole(maker.getFromRole());
+
+                    try {
+                        final List<User> users = userService
+                                .findByRoleAndBranchId(maker.getFromRole().getId(),
+                                        creditMemo.getBranch().getId());
+                        final List<Long> userIdList = users.stream().map(User::getId)
+                                .collect(Collectors.toList());
+                        if (userIdList.contains(currentStage.getCreatedBy())) {
+                            java.util.Optional<User> userOptional = users.stream().
+                                    filter(p -> p.getId().equals(currentStage.getCreatedBy())).
+                                    findFirst();
+                            currentStage.setToUser(
+                                    objectMapper.convertValue(userOptional.get(), User.class));
+                        } else {
+                            currentStage
+                                    .setToUser(
+                                            objectMapper.convertValue(users.get(0), User.class));
+                        }
+                    } catch (Exception e) {
+                        logger.error("Error occurred while mapping credit memo stage", e);
+                        throw new RuntimeException("Error while performing the action");
+                    }
+                }
+            }
+        }
+
+    }
+
 }

@@ -1,6 +1,9 @@
 package com.sb.solutions.web.creditmemo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.sb.solutions.api.user.entity.User;
 import io.swagger.annotations.ApiImplicitParam;
@@ -58,13 +61,6 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
 
     @PostMapping
     public ResponseEntity<?> save(@RequestBody CreditMemo creditMemo) {
-        User user = userService.getAuthenticated();
-        if(user.getUsername() != null){
-            creditMemo.setFromUser(user.getUsername());
-        }
-        user.getBranch().forEach(branch->{
-            creditMemo.setBranchName(branch.getName());
-        });
         return new RestResponseDto().successModel(service.save(creditMemo));
     }
 
@@ -112,7 +108,8 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
     public ResponseEntity<?> getPageableForNotLoanAssociated(@RequestBody Object search, @RequestParam("page") int page,
                                                           @RequestParam("size") int size) {
         return new RestResponseDto()
-                .successModel(service.findAllMemoTypePageableWithFilter(search, PaginationUtils.pageable(page, size)));
+                .successModel(service.findAllMemoTypePageableWithFilter(search, PaginationUtils.pageable(page,size)));
+
     }
 
     @PostMapping("/action")
@@ -144,9 +141,8 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
         Document document = new Document();
         document.setId(documentId);
         creditMemoDocument.setDocument(document);
-        String branchName = userService.getAuthenticated().getBranch().get(0).getName().replace(" ", "_");
+//        String branchName = userService.getAuthenticated().getBranch().get(0).getName().replace(" ", "_");
         String path = new PathBuilder(pathName.toString())
-            .withBranch(branchName)
             .withCustomerName(customerName)
             .withCitizenship(citizenshipNumber)
             .withCustomerLoanId(customerLoanId)
@@ -158,6 +154,19 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
         creditMemoDocument.setPath(((RestResponseDto) Objects
             .requireNonNull(responseEntity.getBody())).getDetail().toString());
         return new RestResponseDto().successModel(creditMemoDocument);
+    }
+
+    @GetMapping("/userFlow")
+    public ResponseEntity<?> userFlow() {
+        //set userFlow while composing memo
+        User user = userService.getAuthenticated();
+        List<User> userFlow = new ArrayList<>();
+        userService.getAll().forEach((u) -> {
+            if (!Objects.equals(u.getId(), user.getId())) {
+                userFlow.add(u);
+            }
+        });
+        return new RestResponseDto().successModel(userFlow);
     }
 
     @Override

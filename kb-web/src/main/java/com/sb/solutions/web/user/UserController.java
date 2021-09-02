@@ -203,4 +203,10 @@ public class UserController {
         return new RestResponseDto().successModel("Password Changed Successfully");
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAll(){
+
+        return new RestResponseDto().successModel(userService.getAll());
+    }
+
 }

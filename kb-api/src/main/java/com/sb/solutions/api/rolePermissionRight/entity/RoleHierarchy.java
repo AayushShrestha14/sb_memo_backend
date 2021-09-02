@@ -5,6 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import com.sb.solutions.core.enums.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,9 @@ public class RoleHierarchy extends BaseEntity<Long> {
 
     @Transient
     private Long userId;
+
+    @Transient
+    private RoleType roleType;
 
     public RoleHierarchy(Long roleOrder, String roleName, Long id) {
         this.roleOrder = roleOrder;

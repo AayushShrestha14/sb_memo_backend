@@ -4,6 +4,7 @@ import com.sb.solutions.api.rolePermissionRight.entity.MemoRole;
 import com.sb.solutions.api.rolePermissionRight.entity.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.sb.solutions.api.creditmemo.entity.CreditMemoType;
@@ -21,7 +22,5 @@ public interface CreditMemoTypeRepository extends JpaRepository<CreditMemoType, 
     Page<CreditMemoType> creditMemoTypeFilter(@Param("name") String name, Pageable pageable);
 
     List<CreditMemoType> findByRoles(Role role);
-
-
-
+    Page<CreditMemoType> findAll(Specification<CreditMemoType> build, Pageable pageable);
 }

@@ -59,7 +59,7 @@ public class CreditMemoSpec implements Specification<CreditMemo> {
                 List<Long> list = pattern.splitAsStream(value)
                     .map(Long::valueOf)
                     .collect(Collectors.toList());
-                Expression<String> exp = root.join("customerLoan").join("branch").get("id");
+                Expression<String> exp = root.join("branch").get("id");
                 Predicate predicate = exp.in(list);
                 return criteriaBuilder.and(predicate);
             case FILTER_BY_TYPE_ID:
