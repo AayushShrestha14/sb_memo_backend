@@ -107,14 +107,6 @@ public class CpSolutionApplication extends SpringBootServletInitializer {
 
             if (productMode.getStatus().equals(Status.ACTIVE)) {
 
-                if (productMode.getProduct().equals(Product.MEMO)) {
-                    ClassPathResource dataResource = new ClassPathResource(
-                        baseServerFolder + "/loan_sql/patch_memo.sql");
-                    ResourceDatabasePopulator populator = new ResourceDatabasePopulator(
-                        dataResource);
-                    populator.execute(dataSource);
-                }
-
                 if (productMode.getProduct().equals(Product.CREDIT_MEMO)) {
                     ClassPathResource dataResource = new ClassPathResource(
                         baseServerFolder + "/loan_sql/patch_credit_memo.sql");
@@ -133,19 +125,11 @@ public class CpSolutionApplication extends SpringBootServletInitializer {
                     populator.execute(dataSource);
                 }
 
-                if (productMode.getProduct().equals(Product.CREDIT_MEMO)) {
-                    ClassPathResource dataResource = new ClassPathResource(
-                        baseServerFolder + "/loan_sql/patch_remove_credit_memo.sql");
-                    ResourceDatabasePopulator populator = new ResourceDatabasePopulator(
-                        dataResource);
-                    populator.execute(dataSource);
-                }
 
             }
 
             this.permissionRemoveForDMSandLAS(productModeDMS, productModeLAS, baseServerFolder);
         }
-
 
 
     }
