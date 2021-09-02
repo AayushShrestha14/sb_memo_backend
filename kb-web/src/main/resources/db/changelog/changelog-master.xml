@@ -708,37 +708,6 @@
     </createTable>
   </changeSet>
 
-  <changeSet id="8-drop-foreignKeyConstraint-customer_loan_id" author="himal rai">
-    <preConditions onFail="MARK_RAN">
-      <foreignKeyConstraintExists foreignKeyName="fk_credit_memo_customer_loan_id_customer_loan_id"/>
-    </preConditions>
-    <comment>Drop FK fk_credit_memo_customer_loan_id_customer_loan_id</comment>
-    <dropForeignKeyConstraint baseTableName="credit_memo" constraintName="fk_credit_memo_customer_loan_id_customer_loan_id"/>
-  </changeSet>
-
-  <changeSet id="9-remove-customer_loan_id" author="himal rai">
-    <dropColumn tableName="credit_memo" columnName="customer_loan_id"/>
-  </changeSet>
-
-  <changeSet id="10-alter-credit-memo-add-customer-loan-id" author="himal rai">
-    <addColumn
-            tableName="credit_memo">
-      <column name="customer_loan_id" type="BIGINT">
-        <constraints nullable="true"
-                     foreignKeyName="fk_credit_memo_customer_loan_id_customer_loan_id"
-                     referencedTableName="customer_loan"
-                     referencedColumnNames="id"/>
-      </column>
-    </addColumn>
-  </changeSet>
-
-  <changeSet id="11-alter-credit-memo-add-loanAssociated" author="himal rai">
-    <addColumn
-            tableName="credit_memo">
-      <column name="loan_associated" type="boolean">
-      </column>
-    </addColumn>
-  </changeSet>
 
   <changeSet id="12-create-memo_role-table" author="himal">
     <preConditions onFail="MARK_RAN">

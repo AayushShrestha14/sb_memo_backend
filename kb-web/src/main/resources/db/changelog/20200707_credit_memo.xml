@@ -141,12 +141,6 @@
                     referencedTableName="credit_memo_stage"
                     referencedColumnNames="id"/>
             </column>
-            <column name="customer_loan_id" type="BIGINT">
-                <constraints nullable="false"
-                    foreignKeyName="fk_credit_memo_customer_loan_id_customer_loan_id"
-                    referencedTableName="customer_loan"
-                    referencedColumnNames="id"/>
-            </column>
             <column name="previous_stage_list" type="LONGTEXT">
                 <constraints nullable="true"/>
             </column>

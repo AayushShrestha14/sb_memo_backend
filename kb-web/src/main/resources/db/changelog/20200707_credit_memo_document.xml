@@ -3,29 +3,6 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
     
-    <changeSet id="2-create-loan_config_credit_memo_documents" author="elvin">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="loan_config_credit_memo_documents"/>
-            </not>
-        </preConditions>
-
-        <createTable tableName="loan_config_credit_memo_documents">
-            <column name="loan_config_id" type="BIGINT">
-                <constraints nullable="false"
-                  foreignKeyName="fk_loan_config_credit_memo_documents_loan_config_id_loan_config_id"
-                  referencedTableName="loan_config"
-                  referencedColumnNames="id"/>
-            </column>
-            <column name="credit_memo_documents_id" type="BIGINT">
-                <constraints nullable="false"
-                  foreignKeyName="fk_loan_config_credit_memo_documents_credit_memo_documents_id_document_id"
-                  referencedTableName="document"
-                  referencedColumnNames="id"/>
-            </column>
-        </createTable>
-
-    </changeSet>
 
     <changeSet id="2-create-credit_memo_document" author="elvin">
         <preConditions onFail="MARK_RAN">
