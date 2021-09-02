@@ -32,18 +32,6 @@ public final class InitialPatch {
 
         logger.info("executing patch query {}", baseServerFolder);
 
-        ClassPathResource dataResource1 = new ClassPathResource(
-            baseServerFolder + GENERALPATCHFOLDER + File.separator + "account_type.sql");
-        ResourceDatabasePopulator populator1 = new ResourceDatabasePopulator(dataResource1);
-
-        populator1.execute(dataSource);
-
-        ClassPathResource dataResource2 = new ClassPathResource(
-            baseServerFolder + GENERALPATCHFOLDER + File.separator + "loan_cycle.sql");
-        ResourceDatabasePopulator populator2 = new ResourceDatabasePopulator(dataResource2);
-
-        populator2.execute(dataSource);
-
         ClassPathResource dataResource3 = new ClassPathResource(
             baseServerFolder + GENERALPATCHFOLDER + File.separator + "patch.sql");
         ResourceDatabasePopulator populator3 = new ResourceDatabasePopulator(dataResource3);

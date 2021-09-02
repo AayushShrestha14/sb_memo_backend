@@ -89,10 +89,6 @@ public class CpSolutionApplication extends SpringBootServletInitializer {
             baseHttp.setFlag(1);
             baseHttpRepo.save(baseHttp);
         }
-        ClassPathResource dataResourc = new ClassPathResource(
-            baseServerFolder + "/loan_sql/patch_product_mode.sql");
-        ResourceDatabasePopulator populators = new ResourceDatabasePopulator(dataResourc);
-        populators.execute(dataSource);
 
         ProductMode productModeDMS = productModeRepository
             .getByProductAndStatus(Product.DMS, Status.ACTIVE);
@@ -111,40 +107,6 @@ public class CpSolutionApplication extends SpringBootServletInitializer {
 
             if (productMode.getStatus().equals(Status.ACTIVE)) {
 
-                if (productMode.getProduct().equals(Product.DMS)) {
-                    ClassPathResource dataResource = new ClassPathResource(
-                        baseServerFolder + "/loan_sql/patch_dms_permission.sql");
-                    ClassPathResource dataResourceTemplate = new ClassPathResource(
-                        baseServerFolder + "/loan_sql/dms_loan_template.sql");
-                    ResourceDatabasePopulator populator = new ResourceDatabasePopulator(
-                        dataResource, dataResourceTemplate);
-                    populator.execute(dataSource);
-                }
-
-                if (productMode.getProduct().equals(Product.ACCOUNT)) {
-                    ClassPathResource dataResource = new ClassPathResource(
-                        baseServerFolder + "/loan_sql/patch_account_opening.sql");
-                    ResourceDatabasePopulator populator = new ResourceDatabasePopulator(
-                        dataResource);
-                    populator.execute(dataSource);
-                }
-
-                if (productMode.getProduct().equals(Product.ELIGIBILITY)) {
-                    ClassPathResource dataResource = new ClassPathResource(
-                        baseServerFolder + "/loan_sql/patch_eligibility_permission.sql");
-                    ResourceDatabasePopulator populator = new ResourceDatabasePopulator(
-                        dataResource);
-                    populator.execute(dataSource);
-                }
-
-                if (productMode.getProduct().equals(Product.ACCOUNT)) {
-                    ClassPathResource dataResource = new ClassPathResource(
-                        baseServerFolder + "/loan_sql/patch_account_opening.sql");
-                    ResourceDatabasePopulator populator = new ResourceDatabasePopulator(
-                        dataResource);
-                    populator.execute(dataSource);
-                }
-
                 if (productMode.getProduct().equals(Product.MEMO)) {
                     ClassPathResource dataResource = new ClassPathResource(
                         baseServerFolder + "/loan_sql/patch_memo.sql");
@@ -161,24 +123,7 @@ public class CpSolutionApplication extends SpringBootServletInitializer {
                     populator.execute(dataSource);
                 }
 
-                if (productMode.getProduct().equals(Product.LAS)) {
-                    ClassPathResource dataResource = new ClassPathResource(
-                        baseServerFolder + "/loan_sql/patch_las_permission.sql");
-                    ClassPathResource dataResourceTemplate = new ClassPathResource(
-                        baseServerFolder + "/loan_sql/las_loan_template.sql");
-                    ResourceDatabasePopulator populator = new ResourceDatabasePopulator(
-                        dataResource, dataResourceTemplate);
-                    populator.execute(dataSource);
-                }
-
             } else {
-                if (productMode.getProduct().equals(Product.ACCOUNT)) {
-                    ClassPathResource dataResource = new ClassPathResource(
-                        baseServerFolder + "/loan_sql/patch_remove_account_opening.sql");
-                    ResourceDatabasePopulator populator = new ResourceDatabasePopulator(
-                        dataResource);
-                    populator.execute(dataSource);
-                }
 
                 if (productMode.getProduct().equals(Product.MEMO)) {
                     ClassPathResource dataResource = new ClassPathResource(
@@ -196,14 +141,6 @@ public class CpSolutionApplication extends SpringBootServletInitializer {
                     populator.execute(dataSource);
                 }
 
-                if (productMode.getProduct().equals(Product.ELIGIBILITY)) {
-                    ClassPathResource dataResource = new ClassPathResource(
-                        baseServerFolder + "/loan_sql/patch_remove_eligibility.sql");
-                    ResourceDatabasePopulator populator = new ResourceDatabasePopulator(
-                        dataResource);
-                    populator.execute(dataSource);
-                }
-
             }
 
             this.permissionRemoveForDMSandLAS(productModeDMS, productModeLAS, baseServerFolder);
@@ -215,18 +152,6 @@ public class CpSolutionApplication extends SpringBootServletInitializer {
 
     private void permissionRemoveForDMSandLAS(ProductMode dms, ProductMode las,
         String baseServerFolder) {
-        if (dms != null && las == null) {
-            ClassPathResource dataResource = new ClassPathResource(
-                baseServerFolder + "/loan_sql/patch_remove_only_las.sql");
-            ResourceDatabasePopulator populator = new ResourceDatabasePopulator(dataResource);
-            populator.execute(dataSource);
-        }
-        if (dms == null && las == null) {
-            ClassPathResource dataResource = new ClassPathResource(
-                baseServerFolder + "/loan_sql/patch_remove_dms_las_permission.sql");
-            ResourceDatabasePopulator populator = new ResourceDatabasePopulator(dataResource);
-            populator.execute(dataSource);
-        }
     }
 
     @Bean
