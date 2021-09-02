@@ -25,9 +25,7 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.sb.solutions.api.loan.dto.LoanStageDto;
-import com.sb.solutions.api.loan.entity.CustomerLoan;
 import com.sb.solutions.core.enitity.BaseEntity;
 import com.sb.solutions.core.enums.DocStatus;
 
@@ -57,8 +55,6 @@ public class CreditMemo extends BaseEntity<Long> {
     @NotNull
     private String content;
 
-    private boolean loanAssociated;
-
     private String toUser;
 
     private String branchName;
@@ -74,9 +70,6 @@ public class CreditMemo extends BaseEntity<Long> {
     private CreditMemoStage currentStage;
 
     private String previousStageList;
-
-    @ManyToOne
-    private CustomerLoan customerLoan;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "credit_memo_documents_path")

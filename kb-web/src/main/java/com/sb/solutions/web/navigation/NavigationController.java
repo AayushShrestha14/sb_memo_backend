@@ -51,13 +51,8 @@ public class NavigationController {
         User u = userService.getAuthenticated();
         List<RolePermissionRights> rolePermissionRights = rolePermissionRightService
             .getByRoleId(u.getRole().getId());
-        /*
-        Beside admin user, no other user can set question for eligibility
-        below logic is to guard
-         */
-        boolean hasEligibilityPermission = rolePermissionRights.stream()
-                .anyMatch(r -> r.getPermission().getId() == ELIGIBILITY_PERMISSION);
-        if (!u.getRole().getRoleName().equals(AppConstant.ADMIN_ROLE) && hasEligibilityPermission) {
+
+        if (!u.getRole().getRoleName().equals(AppConstant.ADMIN_ROLE)) {
             rolePermissionRights.stream().forEach(role -> {
                 if (role.getPermission().getId() == ELIGIBILITY_PERMISSION) {
                     role.getPermission().getSubNavs()

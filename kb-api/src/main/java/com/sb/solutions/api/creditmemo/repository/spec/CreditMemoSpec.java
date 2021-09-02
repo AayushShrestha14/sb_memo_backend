@@ -35,7 +35,7 @@ public class CreditMemoSpec implements Specification<CreditMemo> {
     private static final String FILTER_BY_REFERENCE_NUMBER = "referenceNumber";
     private static final String FILTER_BY_LOAN_FACILITY = "loanId";
     private static final String FILTER_BY_CURRENT_STAGE_DATE = "currentStageDate";
-    private static final String FILTER_BY_LOAN_ASSOCIATED = "loanAssociated";
+
 
     private final String property;
     private final String value;
@@ -98,12 +98,7 @@ public class CreditMemoSpec implements Specification<CreditMemo> {
                 } catch (ParseException e) {
                     return null;
                 }
-            case FILTER_BY_LOAN_ASSOCIATED:
-                if(value.equalsIgnoreCase("true")) {
-                    return criteriaBuilder.equal(root.get(property), true);
-                }else if(value.equalsIgnoreCase("false")){
-                    return criteriaBuilder.equal(root.get(property), false);
-                }
+
             default:
                 return null;
         }

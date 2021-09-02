@@ -1,6 +1,5 @@
 package com.sb.solutions.web;
 
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
@@ -24,15 +23,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.sb.solutions.api.basehttp.BaseHttp;
 import com.sb.solutions.api.basehttp.BaseHttpRepo;
-import com.sb.solutions.api.productMode.entity.ProductMode;
-import com.sb.solutions.api.productMode.repository.ProductModeRepository;
 import com.sb.solutions.api.user.repository.UserRepository;
 import com.sb.solutions.core.config.security.SpringSecurityAuditorAware;
 import com.sb.solutions.core.config.security.property.FileStorageProperties;
 import com.sb.solutions.core.config.security.property.MailProperties;
 import com.sb.solutions.core.constant.CurrentDbServer;
-import com.sb.solutions.core.enums.Product;
-import com.sb.solutions.core.enums.Status;
 
 /**
  * @author Rujan Maharjan on 12/27/2018
@@ -51,10 +46,6 @@ public class CpSolutionApplication extends SpringBootServletInitializer {
 
     @Autowired
     BaseHttpRepo baseHttpRepo;
-
-    @Autowired
-    ProductModeRepository productModeRepository;
-
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
@@ -89,53 +80,18 @@ public class CpSolutionApplication extends SpringBootServletInitializer {
             baseHttp.setFlag(1);
             baseHttpRepo.save(baseHttp);
         }
-
-        ProductMode productModeDMS = productModeRepository
-            .getByProductAndStatus(Product.DMS, Status.ACTIVE);
-        ProductMode productModeLAS = productModeRepository
-            .getByProductAndStatus(Product.LAS, Status.ACTIVE);
-
-        List<ProductMode> productModes = productModeRepository.findAll();
-
         ClassPathResource dataResourceGeneral = new ClassPathResource(
             baseServerFolder + "/loan_sql/patch_general_permission.sql");
         ResourceDatabasePopulator populatorGeneral = new ResourceDatabasePopulator(
             dataResourceGeneral);
         populatorGeneral.execute(dataSource);
 
-        for (ProductMode productMode : productModes) {
+        ClassPathResource dataResource = new ClassPathResource(
+            baseServerFolder + "/loan_sql/patch_credit_memo.sql");
+        ResourceDatabasePopulator populator = new ResourceDatabasePopulator(
+            dataResource);
+        populator.execute(dataSource);
 
-            if (productMode.getStatus().equals(Status.ACTIVE)) {
-
-                if (productMode.getProduct().equals(Product.CREDIT_MEMO)) {
-                    ClassPathResource dataResource = new ClassPathResource(
-                        baseServerFolder + "/loan_sql/patch_credit_memo.sql");
-                    ResourceDatabasePopulator populator = new ResourceDatabasePopulator(
-                        dataResource);
-                    populator.execute(dataSource);
-                }
-
-            } else {
-
-                if (productMode.getProduct().equals(Product.MEMO)) {
-                    ClassPathResource dataResource = new ClassPathResource(
-                        baseServerFolder + "/loan_sql/patch_remove_memo.sql");
-                    ResourceDatabasePopulator populator = new ResourceDatabasePopulator(
-                        dataResource);
-                    populator.execute(dataSource);
-                }
-
-
-            }
-
-            this.permissionRemoveForDMSandLAS(productModeDMS, productModeLAS, baseServerFolder);
-        }
-
-
-    }
-
-    private void permissionRemoveForDMSandLAS(ProductMode dms, ProductMode las,
-        String baseServerFolder) {
     }
 
     @Bean

@@ -487,6 +487,7 @@
       <column name="version" type="INT" defaultValueNumeric="0"/>
     </createTable>
   </changeSet>
+
   <changeSet id="3-create-memo-type-table" author="msucil">
     <createTable tableName="memo_type">
       <column name="id" type="BIGINT" autoIncrement="true">

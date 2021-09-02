@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sb.solutions.core.dto.RestResponseDto;
 import com.sb.solutions.core.utils.date.DateConverter;
-import com.sb.solutions.web.loan.v1.CustomerLoanController;
 
 /**
  * @author Rujan Maharjan on 6/9/2019
@@ -26,7 +25,6 @@ public class DateController {
 
     static final String URL = "/v1/date";
 
-    private static final Logger logger = LoggerFactory.getLogger(CustomerLoanController.class);
 
     private DateConverter dateConverter;
 

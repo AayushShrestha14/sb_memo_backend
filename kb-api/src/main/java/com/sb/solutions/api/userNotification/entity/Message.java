@@ -30,7 +30,6 @@ public class Message {
     private Long toId;
     private Long fromId;
     private Long customerId;
-    private Long loanConfigId;
     private String message;
     private Status status;
 
