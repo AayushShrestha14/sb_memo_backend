@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 public class MemoSpec implements Specification<CreditMemo> {
     private static final String FILTER_BY_TYPE_ID = "CreditMemoTypeId";
     private static final String FILTER_BY_CURRENT_STAGE_DATE = "currentStageDate";
-    private static final String FILTER_BY_LOAN_ASSOCIATED = "loanAssociated";
     private static final String FILTER_BY_REFERENCE_NUMBER = "referenceNumber";
     private static final String FILTER_BY_DOC_STATUS = "documentStatus";
     private static final String FILTER_BY_BRANCH_NAME = "branchName";
@@ -41,8 +40,6 @@ public class MemoSpec implements Specification<CreditMemo> {
                         "%" + value.toLowerCase() + "%");
             case FILTER_BY_TYPE_ID:
                 return criteriaBuilder.equal(root.join("type").get("id"), Long.parseLong(value));
-            case FILTER_BY_LOAN_ASSOCIATED:
-                return criteriaBuilder.equal(root.get(property), false);
             case FILTER_BY_CURRENT_STAGE_DATE:
                 Gson gson = new Gson();
                 Map dates = gson.fromJson(value, Map.class);

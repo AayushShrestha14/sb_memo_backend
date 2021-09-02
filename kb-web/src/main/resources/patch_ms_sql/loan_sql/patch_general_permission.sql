@@ -1,14 +1,11 @@
 BEGIN
 
-        DECLARE  @count smallint
-        DECLARE @counttransfer smallint
-    DECLARE   @countPull smallint
-    SET @count = (Select count(*) from permission)
-    SET @countPull = (Select count(*) from permission where id = 125)
-    SET @counttransfer = (Select count(*) from permission where id = 160)
+        DECLARE
+@count smallint
 
-    if (@count <11)
-        BEGIN
+    SET @count = (Select count(*) from permission)
+    if (@count <10)
+BEGIN
             SET IDENTITY_INSERT permission ON
             INSERT INTO permission (id, permission_name, fa_icon, front_url, orders, status)
             VALUES (1, 'Branch', 'camera-outline', '/home/admin/branch', 10, 1)
@@ -24,14 +21,12 @@ BEGIN
             VALUES (17, 'Dashboard', 'home-outline', '/home/admin/dashboard', 1, 1)
             INSERT INTO permission (id, permission_name, fa_icon, front_url, orders, status)
             VALUES (105, 'Email Configuration', 'inbox-outline', '/home/admin/email-config', 55, 1)
---             INSERT INTO permission (id, permission_name, fa_icon, front_url, orders, status)
---             VALUES (102, 'Catalogue', 'layers-outline', '/home/admin/catalogue', 60, 1)
              INSERT INTO permission (id, permission_name, fa_icon, front_url, orders, status)
             VALUES (103, 'Memo-Catalogue', 'layers-outline', '/home/admin/memo-catalogue', 61, 1)
              INSERT INTO permission (id, permission_name, fa_icon, front_url, orders, status)
              VALUES (104, 'Memo-Dashboard', 'settings-2-outline', 'null', 62, 1)
---               INSERT INTO permission (id, permission_name, fa_icon, front_url, orders, status)
---             VALUES (107, 'loan-Catalogue', 'layers-outline', '/home/admin/loan-catalogue', 63, 1)
+            INSERT INTO permission (id, permission_name, fa_icon, front_url, orders, status)
+            VALUES (160, 'Transfer Document', 'book-outline', '/home/loan/transfer-doc', 119, 1)
 
             SET IDENTITY_INSERT permission OFF
 
@@ -65,22 +60,15 @@ BEGIN
             INSERT INTO role_permission_rights (id, created_at, last_modified_at, permission_id, role_id)
             VALUES (17, '2019-04-04 13:17:01', '2019-04-04 13:17:07', 17, 1)
 
--- Email Config --
-            INSERT INTO role_permission_rights (id, created_at, last_modified_at, permission_id, role_id)
-            VALUES (102, '2019-04-04 13:17:01', '2019-04-04 13:17:07', 102, 1)
 
-
--- Email Config --
-            INSERT INTO role_permission_rights (id, created_at, last_modified_at, permission_id, role_id)
-            VALUES (55, '2019-04-04 13:17:01', '2019-04-04 13:17:07', 105, 1)
-
-
+-- Menu Catalogue --
             INSERT INTO role_permission_rights (id, created_at, last_modified_at, permission_id, role_id)
             VALUES (103, '2019-04-04 13:17:01', '2019-04-04 13:17:07', 103, 1)
+            -- Menu Dashboard --
              INSERT INTO role_permission_rights (id, created_at, last_modified_at, permission_id, role_id)
             VALUES (104, '2019-04-04 13:17:01', '2019-04-04 13:17:07', 104, 3)
-            INSERT INTO role_permission_rights (id, created_at, last_modified_at, permission_id, role_id)
-            VALUES (107, '2019-04-04 13:17:01', '2019-04-04 13:17:07', 107, 1)
+
+
 
 
             SET IDENTITY_INSERT role_permission_rights OFF
@@ -112,69 +100,13 @@ BEGIN
             INSERT INTO permission_api_list(permission_id, api_list_id) values (6, 30)
 
 
-            -- ************************USER*******************************************
-
-
--- ************************DASHBOARD******************************************
-            SET IDENTITY_INSERT url_api ON
-            -- INSERT  INTO url_api (id, api_url, type)
--- values (41, '/v1/user/get/statusCount', 'USER COUNT')
--- INSERT  INTO url_api (id, api_url, type)
--- values (42, '/v1/branch/get/statusCount', 'BRANCH COUNT')
---
--- INSERT  INTO url_api (id, api_url, type)
--- values (45,'/v1/notification', 'NOTIFICATION')
-            SET IDENTITY_INSERT url_api OFF
-
-
-            -- INSERT  INTO permission_api_list(permission_id, api_list_id)
--- values (17, 41)
--- INSERT  INTO permission_api_list(permission_id, api_list_id)
--- values (17, 42)
--- INSERT  INTO permission_api_list(permission_id, api_list_id)
--- values (17, 45)
-
-
--- ************************DASHBOARD******************************************
-
-
--- ************************DEFAULT ADMIN*******************************************
-
--- ************************BRANCH MAP*******************************************
 
             INSERT INTO role_permission_rights_api_rights values (1, 1)
             INSERT INTO role_permission_rights_api_rights values (1, 2)
             INSERT INTO role_permission_rights_api_rights values (1, 3)
             INSERT INTO role_permission_rights_api_rights values (1, 4)
 
-            -- ************************BRANCH MAP*******************************************
-
--- ************************COUNTVIEW*******************************************
--- INSERT  INTO role_permission_rights_api_rights values (17, 41)
--- INSERT  INTO role_permission_rights_api_rights values (17, 42)
-
--- INSERT  INTO role_permission_rights_api_rights values (17, 45)
-
--- ************************COUNTVIEW*******************************************
-
--- ************************DEFAULT ADMIN*******************************************
-        END
-
-
---     if (@countPull < 1)
---         BEGIN
---             SET IDENTITY_INSERT permission ON
---             INSERT INTO permission (id, permission_name, fa_icon, front_url, orders, status)
---             VALUES (125, 'Pull', 'fas fa-angle-double-down', '/home/loan/pull', 100, 1)
---             SET IDENTITY_INSERT permission OFF
---         END
-        if(@counttransfer < 1)
-        BEGIN
-            SET IDENTITY_INSERT permission ON
-            INSERT INTO permission (id, permission_name, fa_icon, front_url, orders, status)
-            VALUES (160, 'Transfer Document', 'book-outline', '/home/loan/transfer-doc', 119, 1)
-        end
-
+END
 END;
 
 

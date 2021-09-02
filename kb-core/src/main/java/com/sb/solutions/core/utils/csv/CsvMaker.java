@@ -144,7 +144,6 @@ public class CsvMaker {
             cellStyle.setAlignment(HorizontalAlignment.CENTER);
 
             Font header = wb.createFont();
-            header.setBoldweight(Font.BOLDWEIGHT_BOLD);
             CellStyle font = wb.createCellStyle();
             font.setFont(header);
             int headerCount = csvHeaders.size();

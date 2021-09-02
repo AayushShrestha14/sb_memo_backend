@@ -25,10 +25,10 @@
                   referencedTableName="users"
                   referencedColumnNames="id"/>
             </column>
-            <column name="created_at" type="DATE">
+            <column name="created_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_at" type="DATE">
+            <column name="last_modified_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
             <column name="version" type="INT" defaultValueNumeric="0"/>
@@ -59,10 +59,10 @@
                   referencedTableName="users"
                   referencedColumnNames="id"/>
             </column>
-            <column name="created_at" type="DATE">
+            <column name="created_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_at" type="DATE">
+            <column name="last_modified_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
             <column name="version" type="INT" defaultValueNumeric="0"/>
@@ -121,10 +121,10 @@
                   referencedTableName="users"
                   referencedColumnNames="id"/>
             </column>
-            <column name="created_at" type="DATE">
+            <column name="created_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_at" type="DATE">
+            <column name="last_modified_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
             <column name="version" type="INT" defaultValueNumeric="0"/>
@@ -139,12 +139,6 @@
                 <constraints nullable="true"
                     foreignKeyName="fk_credit_memo_current_stage_id_credit_memo_stage_id"
                     referencedTableName="credit_memo_stage"
-                    referencedColumnNames="id"/>
-            </column>
-            <column name="customer_loan_id" type="BIGINT">
-                <constraints nullable="false"
-                    foreignKeyName="fk_credit_memo_customer_loan_id_customer_loan_id"
-                    referencedTableName="customer_loan"
                     referencedColumnNames="id"/>
             </column>
             <column name="previous_stage_list" type="LONGTEXT">

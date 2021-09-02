@@ -23,9 +23,6 @@
       <column name="customer_id" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="loan_config_id" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
       <column name="message" type="VARCHAR(500)">
         <constraints nullable="false"/>
       </column>
