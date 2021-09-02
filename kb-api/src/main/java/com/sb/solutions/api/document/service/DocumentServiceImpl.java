@@ -68,38 +68,8 @@ public class DocumentServiceImpl implements DocumentService {
 
 
     @Override
-    public List<Document> getByCycleContainingAndStatus(Long loanCycleId, String statusName) {
-        LoanCycle loanCycle = loanCycleRepository.getOne(loanCycleId);
-        Status status = Status.valueOf(statusName);
-        return documentRepository.findByLoanCycleContainingAndStatus(loanCycle, status);
-    }
-
-    @Override
     public Map<Object, Object> documentStatusCount() {
         return documentRepository.documentStatusCount();
-    }
-
-    @Override
-    public String saveList(List<Long> ids, LoanCycle loanCycle) {
-        Status status = Status.valueOf("ACTIVE");
-        if (ids.size() == 0) {
-            for (Document document : documentRepository
-                    .findByLoanCycleContainingAndStatus(loanCycle, status)) {
-                document.getLoanCycle().remove(loanCycle);
-                documentRepository.save(document);
-            }
-            return "Success";
-        }
-        for (Document document : documentRepository
-                .findByLoanCycleContainingAndStatus(loanCycle, status)) {
-            document.getLoanCycle().remove(loanCycle);
-        }
-        for (Long id : ids) {
-            Document doc = documentRepository.getOne(id);
-            doc.getLoanCycle().add(loanCycle);
-            documentRepository.save(doc);
-        }
-        return "Success";
     }
 
     @Override

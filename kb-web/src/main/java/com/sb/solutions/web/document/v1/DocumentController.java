@@ -68,14 +68,6 @@ public class DocumentController {
             documentService.findAllPageable(searchDto, PaginationUtils.pageable(page, size)));
     }
 
-
-    @GetMapping(value = "/cycle/{cycleId}/status/{statusValue}")
-    public ResponseEntity<?> getByCycleContaining(@PathVariable Long cycleId,
-        @PathVariable String statusValue) {
-        return new RestResponseDto()
-            .successModel(documentService.getByCycleContainingAndStatus(cycleId, statusValue));
-    }
-
     @GetMapping(value = "/lifeCycle")
     public ResponseEntity<?> getLifeCycle() {
         return new RestResponseDto().successModel(loanCycleService.findAll());
@@ -84,16 +76,6 @@ public class DocumentController {
     @GetMapping(value = "/statusCount")
     public ResponseEntity<?> getCount() {
         return new RestResponseDto().successModel(documentService.documentStatusCount());
-    }
-
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "loanCycleId", dataType = "integer", paramType = "query",
-            value = "Results page you want to retrieve (0..N)")})
-    @PostMapping(value = "/saveList")
-    public ResponseEntity<?> saveList(@RequestBody List<Long> integers,
-        @RequestParam("loanCycleId") long loanCycleId) {
-        LoanCycle loanCycle = loanCycleService.findOne(loanCycleId);
-        return new RestResponseDto().successModel(documentService.saveList(integers, loanCycle));
     }
 
     @GetMapping(value = "/all")
