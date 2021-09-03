@@ -11,9 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.sb.solutions.api.document.entity.Document;
-import com.sb.solutions.api.document.entity.LoanCycle;
 import com.sb.solutions.api.document.repository.DocumentRepository;
-import com.sb.solutions.api.document.repository.LoanCycleRepository;
 import com.sb.solutions.core.dto.SearchDto;
 import com.sb.solutions.core.enums.Status;
 
@@ -22,12 +20,8 @@ public class DocumentServiceImpl implements DocumentService {
 
     private final DocumentRepository documentRepository;
 
-    private final LoanCycleRepository loanCycleRepository;
-
-    public DocumentServiceImpl(@Autowired DocumentRepository documentRepository,
-                               @Autowired LoanCycleRepository loanCycleRepository) {
+    public DocumentServiceImpl(@Autowired DocumentRepository documentRepository ) {
         this.documentRepository = documentRepository;
-        this.loanCycleRepository = loanCycleRepository;
     }
 
     @Override
@@ -68,38 +62,8 @@ public class DocumentServiceImpl implements DocumentService {
 
 
     @Override
-    public List<Document> getByCycleContainingAndStatus(Long loanCycleId, String statusName) {
-        LoanCycle loanCycle = loanCycleRepository.getOne(loanCycleId);
-        Status status = Status.valueOf(statusName);
-        return documentRepository.findByLoanCycleContainingAndStatus(loanCycle, status);
-    }
-
-    @Override
     public Map<Object, Object> documentStatusCount() {
         return documentRepository.documentStatusCount();
-    }
-
-    @Override
-    public String saveList(List<Long> ids, LoanCycle loanCycle) {
-        Status status = Status.valueOf("ACTIVE");
-        if (ids.size() == 0) {
-            for (Document document : documentRepository
-                    .findByLoanCycleContainingAndStatus(loanCycle, status)) {
-                document.getLoanCycle().remove(loanCycle);
-                documentRepository.save(document);
-            }
-            return "Success";
-        }
-        for (Document document : documentRepository
-                .findByLoanCycleContainingAndStatus(loanCycle, status)) {
-            document.getLoanCycle().remove(loanCycle);
-        }
-        for (Long id : ids) {
-            Document doc = documentRepository.getOne(id);
-            doc.getLoanCycle().add(loanCycle);
-            documentRepository.save(doc);
-        }
-        return "Success";
     }
 
     @Override

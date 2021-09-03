@@ -1,6 +1,5 @@
 package com.sb.solutions.web.document.v1;
 
-import java.util.List;
 import javax.validation.Valid;
 
 import io.swagger.annotations.ApiImplicitParam;
@@ -16,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sb.solutions.api.document.entity.Document;
-import com.sb.solutions.api.document.entity.LoanCycle;
 import com.sb.solutions.api.document.service.DocumentService;
-import com.sb.solutions.api.document.service.LoanCycleService;
 import com.sb.solutions.core.dto.RestResponseDto;
 import com.sb.solutions.core.dto.SearchDto;
 import com.sb.solutions.core.utils.PaginationUtils;
@@ -31,16 +28,13 @@ import com.sb.solutions.web.document.v1.mapper.DocumentMapper;
 public class DocumentController {
 
     private final DocumentService documentService;
-    private final LoanCycleService loanCycleService;
     private final DocumentMapper documentMapper;
 
     public DocumentController(
         @Autowired DocumentService documentService,
-        @Autowired LoanCycleService loanCycleService,
         @Autowired DocumentMapper documentMapper
     ) {
         this.documentService = documentService;
-        this.loanCycleService = loanCycleService;
         this.documentMapper = documentMapper;
     }
 
@@ -68,32 +62,9 @@ public class DocumentController {
             documentService.findAllPageable(searchDto, PaginationUtils.pageable(page, size)));
     }
 
-
-    @GetMapping(value = "/cycle/{cycleId}/status/{statusValue}")
-    public ResponseEntity<?> getByCycleContaining(@PathVariable Long cycleId,
-        @PathVariable String statusValue) {
-        return new RestResponseDto()
-            .successModel(documentService.getByCycleContainingAndStatus(cycleId, statusValue));
-    }
-
-    @GetMapping(value = "/lifeCycle")
-    public ResponseEntity<?> getLifeCycle() {
-        return new RestResponseDto().successModel(loanCycleService.findAll());
-    }
-
     @GetMapping(value = "/statusCount")
     public ResponseEntity<?> getCount() {
         return new RestResponseDto().successModel(documentService.documentStatusCount());
-    }
-
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "loanCycleId", dataType = "integer", paramType = "query",
-            value = "Results page you want to retrieve (0..N)")})
-    @PostMapping(value = "/saveList")
-    public ResponseEntity<?> saveList(@RequestBody List<Long> integers,
-        @RequestParam("loanCycleId") long loanCycleId) {
-        LoanCycle loanCycle = loanCycleService.findOne(loanCycleId);
-        return new RestResponseDto().successModel(documentService.saveList(integers, loanCycle));
     }
 
     @GetMapping(value = "/all")

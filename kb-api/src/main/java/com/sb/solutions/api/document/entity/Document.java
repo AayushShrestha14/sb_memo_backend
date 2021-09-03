@@ -1,11 +1,7 @@
 package com.sb.solutions.api.document.entity;
 
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,12 +26,6 @@ public class Document extends BaseEntity<Long> {
 
     @Column(nullable = false)
     private String url;
-
-    @ManyToMany
-    @JoinTable(name = "document_loan_cycle",
-        joinColumns = {@JoinColumn(name = "document_id", referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "loan_cycle_id", referencedColumnName = "id")})
-    private Set<LoanCycle> loanCycle;
 
     private Status status;
 }
