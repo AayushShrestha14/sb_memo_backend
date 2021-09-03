@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.sb.solutions.api.document.entity.Document;
-import com.sb.solutions.api.document.entity.LoanCycle;
 import com.sb.solutions.core.enums.Status;
 
 @Repository

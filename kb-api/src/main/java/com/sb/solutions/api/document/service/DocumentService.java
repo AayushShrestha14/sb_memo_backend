@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.sb.solutions.api.document.entity.Document;
-import com.sb.solutions.api.document.entity.LoanCycle;
 import com.sb.solutions.core.service.BaseService;
 
 

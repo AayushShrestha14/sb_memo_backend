@@ -11,9 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.sb.solutions.api.document.entity.Document;
-import com.sb.solutions.api.document.entity.LoanCycle;
 import com.sb.solutions.api.document.repository.DocumentRepository;
-import com.sb.solutions.api.document.repository.LoanCycleRepository;
 import com.sb.solutions.core.dto.SearchDto;
 import com.sb.solutions.core.enums.Status;
 
@@ -22,12 +20,8 @@ public class DocumentServiceImpl implements DocumentService {
 
     private final DocumentRepository documentRepository;
 
-    private final LoanCycleRepository loanCycleRepository;
-
-    public DocumentServiceImpl(@Autowired DocumentRepository documentRepository,
-                               @Autowired LoanCycleRepository loanCycleRepository) {
+    public DocumentServiceImpl(@Autowired DocumentRepository documentRepository ) {
         this.documentRepository = documentRepository;
-        this.loanCycleRepository = loanCycleRepository;
     }
 
     @Override
