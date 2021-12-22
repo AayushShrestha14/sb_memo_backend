@@ -991,4 +991,37 @@
       </column>
     </addColumn>
   </changeSet>
+
+  <changeSet id="08-create-template" author="sushmita">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="template"/>
+      </not>
+    </preConditions>
+
+    <createTable tableName="template">
+      <column name="id" type="BIGINT" autoIncrement="true">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="name" type="VARCHAR(256)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="content" type="NVARCHAR(MAX)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="created_by_id" type="BIGINT">
+        <constraints nullable="true"/>
+      </column>
+      <column name="created_at" type="DATETIME">
+        <constraints nullable="false"/>
+      </column>
+      <column name="version" type="INT" defaultValueNumeric="0"/>
+      <column name="modified_by_id" type="BIGINT">
+        <constraints nullable="true"/>
+      </column>
+      <column name="last_modified_at" type="DATETIME">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
 </databaseChangeLog>
