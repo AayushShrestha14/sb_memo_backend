@@ -56,3 +56,30 @@ BEGIN
 
         END
 END;
+
+BEGIN
+    DECLARE @count SMALLINT
+    SET @count = (SELECT COUNT(*) FROM permission WHERE permission_name = 'Template')
+    if (@count = 0)
+BEGIN
+            DECLARE @templateId SMALLINT
+            INSERT INTO permission (permission_name, fa_icon, front_url, orders, status)
+            VALUES ('Template', 'email-outline', null, 66, 1)
+            SET @templateId = (SELECT id FROM permission WHERE permission_name = 'Template')
+
+            SET IDENTITY_INSERT sub_nav ON
+            INSERT INTO sub_nav (id, sub_nav_name, front_url, fa_icon)
+            VALUES (17, 'Create Template', '/home/admin/template', 'email-outline')
+            INSERT INTO sub_nav (id, sub_nav_name, front_url, fa_icon)
+            VALUES (18, 'Template Catalogue', '/home/admin/template-catalogue', 'email-outline')
+            SET IDENTITY_INSERT sub_nav OFF
+
+            INSERT INTO permission_sub_navs (permission_id, sub_navs_id)
+            VALUES (@templateId, 17)
+            INSERT INTO permission_sub_navs (permission_id, sub_navs_id)
+            VALUES (@templateId, 18)
+
+            INSERT INTO role_permission_rights (created_at, last_modified_at, permission_id, role_id)
+            VALUES ('2019-04-04 13:17:01', '2019-04-04 13:17:07', @templateId, 1)
+END
+END;
