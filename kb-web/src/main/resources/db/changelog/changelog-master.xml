@@ -1022,6 +1022,9 @@
       <column name="last_modified_at" type="DATETIME">
         <constraints nullable="false"/>
       </column>
+      <column name="status" type="INT">
+        <constraints nullable="false"/>
+      </column>
     </createTable>
   </changeSet>
 
