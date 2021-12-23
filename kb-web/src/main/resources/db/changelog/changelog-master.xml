@@ -1024,4 +1024,18 @@
       </column>
     </createTable>
   </changeSet>
+
+  <changeSet id="09-alter-credit-memo-add-data" author="Aayush">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <columnExists tableName="credit_memo" columnName="data"/>
+      </not>
+    </preConditions>
+    <addColumn
+            tableName="credit_memo">
+      <column name="data" type="NVARCHAR(MAX)">
+        <constraints nullable="true"/>
+      </column>
+    </addColumn>
+  </changeSet>
 </databaseChangeLog>
