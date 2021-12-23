@@ -89,6 +89,8 @@ public class CreditMemo extends BaseEntity<Long> {
     @ManyToMany
     private List<User> userFlow;
 
+    private String data;
+
     public List<LoanStageDto> getPreviousStages() {
         if (this.getPreviousStageList() != null) {
             ObjectMapper objectMapper = new ObjectMapper();
