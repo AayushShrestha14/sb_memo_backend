@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.sb.solutions.core.enitity.BaseEntity;
+import com.sb.solutions.core.enums.Status;
 
 @Entity
 @Data
@@ -26,4 +27,6 @@ public class Template extends BaseEntity<Long> {
 
     @NotNull
     private String content;
+
+    private Status status;
 }

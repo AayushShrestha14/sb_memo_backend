@@ -1,14 +1,18 @@
 package com.sb.solutions.api.template.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import com.sb.solutions.api.template.entity.Template;
 import com.sb.solutions.api.template.repository.TemplateRepository;
+import com.sb.solutions.api.template.repository.spec.TemplateSpecBuilder;
+import com.sb.solutions.core.enums.Status;
 
 @Service
 public class TemplateServiceImpl implements TemplateService{
@@ -31,12 +35,20 @@ public class TemplateServiceImpl implements TemplateService{
 
     @Override
     public Template save(Template template) {
+
+        if (template.getId() == null) {
+            template.setStatus(Status.ACTIVE);
+        }
         return repository.save(template);
     }
 
     @Override
     public Page<Template> findAllPageable(Object t, Pageable pageable) {
-        return null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> search = objectMapper.convertValue(t,Map.class);
+        search.values().removeIf(Objects::isNull);
+        TemplateSpecBuilder builder = new TemplateSpecBuilder(search);
+        return repository.findAll(builder.build(), pageable);
     }
 
     @Override
