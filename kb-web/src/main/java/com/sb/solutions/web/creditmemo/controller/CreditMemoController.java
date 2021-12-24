@@ -173,4 +173,20 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
     protected Logger getLogger() {
         return logger;
     }
+
+    @PostMapping("/approvedMemo")
+    public ResponseEntity<?> getPageableForApprovedMemo(@RequestBody Object search, @RequestParam("page") int page,
+        @RequestParam("size") int size) {
+        return new RestResponseDto()
+            .successModel(service.findAllPageableForApprovedMemo(search, PaginationUtils.pageable(page,size)));
+
+    }
+
+    @PostMapping("/rejectedMemo")
+    public ResponseEntity<?> getPageableForRejectedMemo(@RequestBody Object search, @RequestParam("page") int page,
+        @RequestParam("size") int size) {
+        return new RestResponseDto()
+            .successModel(service.findAllPageableForRejectedMemo(search, PaginationUtils.pageable(page,size)));
+
+    }
 }
