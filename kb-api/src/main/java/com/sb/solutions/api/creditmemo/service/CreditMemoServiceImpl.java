@@ -12,7 +12,6 @@ import com.sb.solutions.api.creditmemo.repository.spec.MemoSpecBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.util.ObjectUtils;
 
 import com.sb.solutions.api.creditmemo.entity.CreditMemo;
 import com.sb.solutions.api.creditmemo.entity.CreditMemoStage;
@@ -22,7 +21,6 @@ import com.sb.solutions.api.user.entity.User;
 import com.sb.solutions.api.user.service.UserService;
 import com.sb.solutions.core.enums.DocAction;
 import com.sb.solutions.core.enums.DocStatus;
-import com.sb.solutions.core.enums.RoleType;
 
 /**
  * @author Elvin Shrestha on 7/7/2020
@@ -194,7 +192,6 @@ public class CreditMemoServiceImpl implements CreditMemoService {
 //          }
 //
 //        search.values().removeIf(Objects::isNull);
-
         MemoSpecBuilder builder = new MemoSpecBuilder(search);
         return repository.findAll(builder.build(), pageable);
     }
@@ -209,25 +206,6 @@ public class CreditMemoServiceImpl implements CreditMemoService {
         return memoByBranch;
     }
 
-    @Override
-    public Page<CreditMemo> findAllPageableForApprovedMemo(Object t, Pageable pageable) {
-        final ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, String> search = objectMapper.convertValue(t, Map.class);
-        search.put("documentStatus",DocStatus.APPROVED.toString());
-        search.values().removeIf(Objects::isNull);
-        MemoSpecBuilder builder = new MemoSpecBuilder(search);
-        return repository.findAll(builder.build(), pageable);
-    }
-
-    @Override
-    public Page<CreditMemo> findAllPageableForRejectedMemo(Object t, Pageable pageable) {
-        final ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, String> search = objectMapper.convertValue(t, Map.class);
-        search.put("documentStatus",DocStatus.REJECTED.toString());
-        search.values().removeIf(Objects::isNull);
-        MemoSpecBuilder builder = new MemoSpecBuilder(search);
-        return repository.findAll(builder.build(), pageable);
-    }
 
 
 }
