@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=memo_demo_3
+    url: jdbc:sqlserver://localhost:1433;databaseName=MEMO
     username: sa
     password: root
 
