@@ -90,6 +90,17 @@ public class CreditMemoServiceImpl implements CreditMemoService {
         if(creditMemo.getUserFlow().size() != 1){
             userFlow.replace(userFlow.length()-1, userFlow.length()," ");
         }
+
+        //set cc
+        StringBuilder memoCc = new StringBuilder();
+        creditMemo.getMemoCc().forEach( flow -> {
+            if(flow.getId() != creditMemo.getMemoCc().get(creditMemo.getMemoCc().size()-1).getId()) {
+                memoCc.append(flow.getName()).append("/");
+            }
+        });
+        if(creditMemo.getMemoCc().size() != 1){
+            memoCc.replace(memoCc.length()-1, memoCc.length()," ");
+        }
         creditMemo.setToUser(userFlow.toString());
         return repository.save(creditMemo);
     }
@@ -204,6 +215,19 @@ public class CreditMemoServiceImpl implements CreditMemoService {
             memoByBranch.addAll(repository.findByBranch(b));
         }
         return memoByBranch;
+    }
+
+    @Override
+    public Page<CreditMemo> findAllAppriseMemo(Object t, Pageable pageable) {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> search = objectMapper.convertValue(t, Map.class);
+        User currentUser = userService.getAuthenticated();
+        if (!Objects.isNull(currentUser) && !currentUser.getRole().getRoleName().equals("admin")) {
+                        search.put("memoCc", String.valueOf(currentUser.getId()));
+        }
+        search.values().removeIf(Objects::isNull);
+        MemoSpecBuilder builder = new MemoSpecBuilder(search);
+        return repository.findAll(builder.build(), pageable);
     }
 
 

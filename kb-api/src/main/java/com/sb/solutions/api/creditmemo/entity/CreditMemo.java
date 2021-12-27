@@ -89,6 +89,9 @@ public class CreditMemo extends BaseEntity<Long> {
     @ManyToMany
     private List<User> userFlow;
 
+    @ManyToMany
+    private List<User> memoCc;
+
     private String data;
 
     public List<LoanStageDto> getPreviousStages() {

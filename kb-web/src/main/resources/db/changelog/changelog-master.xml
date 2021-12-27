@@ -1041,4 +1041,28 @@
       </column>
     </addColumn>
   </changeSet>
+
+  <changeSet id="07-create-credit_memo_memo_cc" author="Sushmita">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="credit_memo_memo_cc"/>
+      </not>
+    </preConditions>
+
+    <createTable tableName="credit_memo_memo_cc">
+      <column name="credit_memo_id" type="BIGINT">
+        <constraints nullable="true"
+          foreignKeyName="fk_credit_memo_user_cc_credit_memo_id"
+          referencedTableName="credit_memo"
+          referencedColumnNames="id"/>
+      </column>
+      <column name="memo_cc_id" type="BIGINT">
+        <constraints nullable="true"
+          foreignKeyName="fk_credit_memo_user_cc_id_credit_memo_user_cc_id"
+          referencedTableName="users"
+          referencedColumnNames="id"/>
+      </column>
+    </createTable>
+  </changeSet>
+
 </databaseChangeLog>

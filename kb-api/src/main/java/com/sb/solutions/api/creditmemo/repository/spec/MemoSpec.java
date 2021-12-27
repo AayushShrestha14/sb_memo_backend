@@ -23,6 +23,7 @@ public class MemoSpec implements Specification<CreditMemo> {
     private static final String FILTER_BY_CURRENT_STAGE_TO_ROLE = "currentStage.toRole.id";
     private static final String FILTER_BY_CURRENT_STAGE_TO_USER = "currentPossessionUserId";
     private static final String FITER_BY_SUBJECT="subject";
+    private static final String FITER_BY_MEMO_CC="memoCc";
 
     private final String property;
     private final String value;
@@ -79,6 +80,10 @@ public class MemoSpec implements Specification<CreditMemo> {
             case FITER_BY_SUBJECT:
                 return criteriaBuilder.like(criteriaBuilder.lower(root.get(FITER_BY_SUBJECT)),
                         "%" + value.toLowerCase() + "%");
+            case FITER_BY_MEMO_CC:
+                return criteriaBuilder
+                    .equal(root.join("memoCc", JoinType.LEFT).get("id"),
+                        Long.valueOf(value));
 
             default:
                 return null;
