@@ -162,6 +162,12 @@ public class CreditMemoServiceImpl implements CreditMemoService {
     public Page<CreditMemo> findAllMemoTypePageableWithFilter(Object t, Pageable pageable) {
         final ObjectMapper objectMapper = new ObjectMapper();
         Map<String, String> search = objectMapper.convertValue(t, Map.class);
+        User currentUser = userService.getAuthenticated();
+        if(!Objects.isNull(currentUser) && !currentUser.getRole().getRoleName().equals("admin")){
+            search.put("currentPossessionUserId", String.valueOf(currentUser.getId()));
+        }
+
+        search.values().removeIf(Objects::isNull);
 //        User user = userService.getAuthenticated();
 //        if(user.getBranch() != null) {
 //            for(Branch userBranch: user.getBranch()){

@@ -21,7 +21,7 @@ public class MemoSpec implements Specification<CreditMemo> {
     private static final String FILTER_BY_BRANCH_NAME = "branchName";
     private static final String FILTER_BY_BRANCH = "branchIds";
     private static final String FILTER_BY_CURRENT_STAGE_TO_ROLE = "currentStage.toRole.id";
-    private static final String FILTER_BY_CURRENT_STAGE_TO_USER = "currentStage.toUser.id";
+    private static final String FILTER_BY_CURRENT_STAGE_TO_USER = "currentPossessionUserId";
     private static final String FITER_BY_SUBJECT="subject";
 
     private final String property;
