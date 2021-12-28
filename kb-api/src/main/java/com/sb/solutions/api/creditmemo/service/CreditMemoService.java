@@ -17,4 +17,5 @@ public interface CreditMemoService extends BaseService<CreditMemo> {
     Page<CreditMemo> findAllPageableForLoanAssociated(Object t, Pageable pageable);
     Page<CreditMemo> findAllMemoTypePageableWithFilter(Object t, Pageable pageable);
     List<CreditMemo> findByBranch();
+    Page<CreditMemo> findAllAppriseMemo(Object t, Pageable pageable);
 }

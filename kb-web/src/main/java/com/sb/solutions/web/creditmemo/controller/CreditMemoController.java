@@ -158,7 +158,7 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
 
     @GetMapping("/userFlow")
     public ResponseEntity<?> userFlow() {
-        //set userFlow while composing memo
+        //get list of users, to set userFlow while composing memo
         User user = userService.getAuthenticated();
         List<User> userFlow = new ArrayList<>();
         userService.getAll().forEach((u) -> {
@@ -172,5 +172,18 @@ public class CreditMemoController extends BaseController<CreditMemo, Long> {
     @Override
     protected Logger getLogger() {
         return logger;
+    }
+
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
+            value = "Results page you want to retrieve (0..N)"),
+        @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
+            value = "Number of records per page.")})
+    @PostMapping("/AppriseMemo")
+    public ResponseEntity<?> getPageableForAppriseMemo(@RequestBody Object search, @RequestParam("page") int page,
+        @RequestParam("size") int size) {
+        return new RestResponseDto()
+            .successModel(service.findAllAppriseMemo(search, PaginationUtils.pageable(page,size)));
+
     }
 }
