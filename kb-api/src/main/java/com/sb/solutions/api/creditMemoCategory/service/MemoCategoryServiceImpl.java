@@ -2,11 +2,16 @@ package com.sb.solutions.api.creditMemoCategory.service;
 
 import com.sb.solutions.api.creditMemoCategory.entity.MemoCategory;
 import com.sb.solutions.api.creditMemoCategory.repository.MemoCategoryRepository;
+import com.sb.solutions.api.creditMemoCategory.spec.MemoCategorySpecBuilder;
+
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class MemoCategoryServiceImpl implements MemoCategoryService {
@@ -34,7 +39,11 @@ public class MemoCategoryServiceImpl implements MemoCategoryService {
 
     @Override
     public Page<MemoCategory> findAllPageable(Object t, Pageable pageable) {
-        return memoCategoryRepository.findAll(pageable);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> search = objectMapper.convertValue(t,Map.class);
+        search.values().removeIf(Objects::isNull);
+        MemoCategorySpecBuilder builder = new MemoCategorySpecBuilder(search);
+        return memoCategoryRepository.findAll(builder.build(),pageable);
     }
 
     @Override
